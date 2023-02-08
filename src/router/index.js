@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AdminDomainListView from '../views/AdminDomainListView.vue';
 import oneDomainAdminView from '../views/OneAdminDomainView.vue';
 import DisplayDeviceView from '../views/DisplayDeviceView.vue';
-// import UpdateDeviceView from '../views/UpdateDeviceView.vue';
+import UpdateDeviceView from '../views/UpdateDeviceView.vue';
 import SettingsView from '../views/SettingsView.vue';
 
 const router = createRouter({
@@ -29,11 +29,11 @@ const router = createRouter({
       name: 'DisplayDevice',
       component: DisplayDeviceView,
     },
-    // {
-    //   path: '/UpdateDevice',
-    //   name: 'UpdateDevice',
-    //   component: UpdateDeviceView,
-    // },
+    {
+      path: '/UpdateDevice',
+      name: 'UpdateDevice',
+      component: UpdateDeviceView,
+    },
     {
       path: '/Settings',
       name: 'Settings',
