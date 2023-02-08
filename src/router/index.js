@@ -6,7 +6,6 @@ import DisplayDeviceView from '../views/DisplayDeviceView.vue';
 import UpdateDeviceView from '../views/UpdateDeviceView.vue';
 import SettingsView from '../views/SettingsView.vue';
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -39,7 +38,7 @@ const router = createRouter({
       path: '/Settings',
       name: 'Settings',
       component: SettingsView,
-    }
+    },
   ],
 });
 
