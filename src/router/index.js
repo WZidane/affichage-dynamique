@@ -14,16 +14,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
-    {
-      path: '/ListOfDomainAdmin',
-      name: 'ListOfDomainAdmin',
-      component: AdminDomainListView,
-    },
-    {
-      path: '/oneDomainAdmin',
-      name: 'oneDomainAdmin',
-      component: oneDomainAdminView,
-    },
+
     {
       path: '/DisplayDevice',
       name: 'DisplayDevice',

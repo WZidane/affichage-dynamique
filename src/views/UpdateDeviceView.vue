@@ -3,27 +3,32 @@
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { BASE, OBJ, TOKEN } from "/public/config.js";
+import { useTokenStore } from "../stores/token";
 
 
 const axios = inject('axios');
+const token = useTokenStore();
 
 let state = reactive({
     Device: {},
     Domain: {},
-    sequences: [],
-    ecrans: [],
-    visible: false,
-    NameDevice: "",
+
     Devices: []
 });
 
 
 onMounted(() => {
+    // token.setDefaultBasicUrl();
+    // token.setDeviceObj();
+    // token.setDefaultToken();
+    console.log(token.state.BASE)
+
     getDeviceInformation();
+    getDevices()
 })
 
 function getDeviceInformation() {
-    axios.get(`${BASE}${OBJ}${TOKEN}?fields=Nom_Dispositif,Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Domaine.Nom_Domaine,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree`).then(response => {
+    axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Domaine.Nom_Domaine,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree`).then(response => {
         state.Device = response.data
         state.NameDevice = state.Device.data.Nom_Dispositif
         state.ecrans = state.Device.data.Ecrans;
@@ -40,8 +45,9 @@ function getDeviceInformation() {
     })
 }
 function getDevices() {
-    axios.get(`${BASE}${OBJ}${TOKEN}??fields=id`).then(response => {
+    axios.get(`${token.state.BASE}${token.state.OBJ}?fields=id`).then(response => {
         state.Devices = response.data
+        console.log(state.Devices)
     })
 }
 
@@ -51,9 +57,9 @@ function getDevices() {
     <h1>Page UpdateDevice</h1>
     <h2>Vous êtes actuellement sur le domaine: {{ state.Domain.Nom_Domaine }}</h2>
     <h3>L'url : {{ BASE }}{{ OBJ }}</h3>
-    <h3>TOKEN du dispositif d'affichage : 
+    <h3>TOKEN du dispositif d'affichage :
         <select name="Token">
-            <option value="{{TOKEN}}">{{TOKEN}}</option>
+            <option value="{{TOKEN}}">{{ TOKEN }}</option>
         </select>
     </h3>
 
