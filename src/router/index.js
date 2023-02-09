@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AdminDomainListView from '../views/AdminDomainListView.vue';
 import oneDomainAdminView from '../views/OneAdminDomainView.vue';
 import DisplayDeviceView from '../views/DisplayDeviceView.vue';
+import ConnexionView from "@/views/ConnexionView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/oneDomainAdmin',
       name: 'oneDomainAdmin',
       component: oneDomainAdminView,
+    },
+    {
+      path: '/se-connecter',
+      name: 'se-connecter',
+      component: ConnexionView,
     },
     {
       path: '/DisplayDevice',
