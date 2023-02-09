@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue';
 import AdminDomainListView from '../views/AdminDomainListView.vue';
 import oneDomainAdminView from '../views/OneAdminDomainView.vue';
 import DisplayDeviceView from '../views/DisplayDeviceView.vue';
+import UpdateDeviceView from '../views/UpdateDeviceView.vue';
+import SettingsView from '../views/SettingsView.vue';
 import ConnexionView from "@/views/ConnexionView.vue";
 
 const router = createRouter({
@@ -13,15 +15,21 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+
     {
-      path: '/ListOfDomainAdmin',
-      name: 'ListOfDomainAdmin',
-      component: AdminDomainListView,
+      path: '/DisplayDevice',
+      name: 'DisplayDevice',
+      component: DisplayDeviceView,
     },
     {
-      path: '/oneDomainAdmin',
-      name: 'oneDomainAdmin',
-      component: oneDomainAdminView,
+      path: '/UpdateDevice',
+      name: 'UpdateDevice',
+      component: UpdateDeviceView,
+    },
+    {
+      path: '/Settings',
+      name: 'Settings',
+      component: SettingsView,
     },
     {
       path: '/se-connecter',
@@ -33,8 +41,6 @@ const router = createRouter({
       name: 'DisplayDevice',
       component: DisplayDeviceView,
     },
-
-    DisplayDeviceView,
   ],
 });
 
