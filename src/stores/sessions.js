@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import { useGlobal } from '@/mixins/global';
 import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 export const useSessionStore = defineStore('session', () => {
 
     const global = useGlobal();
     const route = useRoute();
+    const router = useRouter();
     const routesOuvertes = ['se-connecter'];
 
     /**
@@ -20,7 +22,11 @@ export const useSessionStore = defineStore('session', () => {
         console.log('IsValid ?');
 
         if (useUserStore().isConnected) {
-            return true;
+            if(isRouteOuverte(route)) {
+                router.push('/DisplayDevice');
+            } else {
+                return true;
+            }
         } else {
             if (isRouteOuverte(route)) {
                 return true;
