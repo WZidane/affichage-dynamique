@@ -1,6 +1,5 @@
 <script setup>
 import { inject, reactive } from 'vue'
-import {BASE} from "../../public/config";
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
 
@@ -21,7 +20,7 @@ let data = reactive({
 })
 
 async function validationFormulaire() {
-  axios.post(`${BASE}auth/login/`, {email: user.email, password: user.password}).then(function (response) {
+  axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
     data.token = response.data.data.access_token;
   }).catch(() => {
