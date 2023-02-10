@@ -67,17 +67,16 @@ function update() {
 </script>
 <template>
     <h1>Page UpdateDevice</h1>
-    <h2>Vous êtes actuellement sur le domaine: {{ state.Domain.Nom_Domaine }}</h2>
-    <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3>
+    <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
+    <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
     <h3>TOKEN du dispositif d'affichage :</h3>
 
     <form id="formulaireNewToken" @change="updateToken" @submit.prevent="update">
       <select id="NewTOKEN" :v-model="token.state.TOKEN" name="NewTOKEN">
-        <!-- <option v-for="token in state.otherDevices" :v-if="state.NameDomain == state.NameDomainDevice" :key="token.id" :value="token.id">{{ token.id }}</option> -->
-        <option value="">-- Please choose a token --</option>
+        <option value="">-- Veuillez choisir un token --</option>
         <option v-for="token in state.otherDevices" :key="token.id" :value="token.id">{{ token.id }}</option>
       </select>
-      <button>Valider changement</button>
+      <button class="is-primary">Valider le token</button>
     </form>
 </template>
 <style scoped>
