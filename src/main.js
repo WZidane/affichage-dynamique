@@ -1,20 +1,13 @@
-import { createApp, provide } from 'vue';
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-
-const pinia = createPinia();
-pinia.use(piniaPluginPersistedstate);
-
 import App from './App.vue';
 import router from './router';
-import './assets/main.css';
 
 const app = createApp(App);
 
-app.use(pinia)
+app.use(createPinia());
 app.use(router);
 app.use(VueAxios, axios);
 app.provide('axios', app.config.globalProperties.axios);

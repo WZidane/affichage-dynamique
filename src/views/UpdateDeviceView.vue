@@ -1,84 +1,71 @@
+
 <script setup>
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
-import { useTokenStore } from "@/stores/token";
-import {useRouter} from "vue-router";
+import { BASE, OBJ, TOKEN } from "/public/config.js";
+import { useTokenStore } from "../stores/token";
 
 
 const axios = inject('axios');
 const token = useTokenStore();
-const router = useRouter();
 
 let state = reactive({
     Device: {},
     Domain: {},
-    sequences: [],
-    ecrans: [],
-    visible: false,
-    NameDevice: "",
-    Devices: [],
-    otherDevices:[],
-    NameDomain: ""
+
+    Devices: []
 });
 
 
 onMounted(() => {
-  /*
-    token.setDefaultBasicUrl();
-    token.setDeviceObj();
-    token.setDefaultToken();
-   */
-    // console.log(token.state.BASE)
+    // token.setDefaultBasicUrl();
+    // token.setDeviceObj();
+    // token.setDefaultToken();
+    console.log(token.state.BASE)
 
     getDeviceInformation();
+    getDevices()
 })
 
-async function getDeviceInformation() {
-    await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Domaine.Nom_Domaine,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree`).then(response => {
-        state.Device = response.data ;
-        state.Domain = state.Device.data.Domaine;
-        state.NameDomain = state.Domain.Nom_Domaine
-        state.NameDevice = state.Device.data.Nom_Dispositif;
+function getDeviceInformation() {
+    axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Domaine.Nom_Domaine,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree`).then(response => {
+        state.Device = response.data
+        state.NameDevice = state.Device.data.Nom_Dispositif
         state.ecrans = state.Device.data.Ecrans;
         state.sequences = state.Device.data.Sequences;
-
-    }).then(() => {
-      getDevices();
-    });
+        state.Domain = state.Device.data.Domaine
+        console.log('Ligne 1 : ')
+        console.log(state.NameDevice)
+        console.log('Ligne 2 : ')
+        console.log(state.ecrans)
+        console.log('Ligne 3 : ')
+        console.log(state.sequences)
+        console.log('Ligne 4 : ')
+        console.log(state.Domain.Nom_Domaine)
+    })
 }
 function getDevices() {
-        axios.get(`${token.state.BASE}${token.state.OBJ}?fields=id&filter[Domaine][Nom_Domaine][_eq]=${state.NameDomain}`).then(response => {
-        state.Devices = response.data;
-        state.otherDevices = state.Devices.data;
-    });
-
+    axios.get(`${token.state.BASE}${token.state.OBJ}?fields=id`).then(response => {
+        state.Devices = response.data
+        console.log(state.Devices)
+    })
 }
 
-
-function updateToken(event) {
-  token.state.TOKEN = event.target.value;
-  console.log(token.state.TOKEN);
-}
-
-function update() {
-  router.push('/Settings');
-}
 
 </script>
 <template>
     <h1>Page UpdateDevice</h1>
-    <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
-    <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
-    <h3>TOKEN du dispositif d'affichage :</h3>
+    <h2>Vous êtes actuellement sur le domaine: {{ state.Domain.Nom_Domaine }}</h2>
+    <h3>L'url : {{ BASE }}{{ OBJ }}</h3>
+    <h3>TOKEN du dispositif d'affichage :
+        <select name="Token">
+            <option value="{{TOKEN}}">{{ TOKEN }}</option>
+        </select>
+    </h3>
 
-    <form id="formulaireNewToken" @change="updateToken" @submit.prevent="update">
-      <select id="NewTOKEN" :v-model="token.state.TOKEN" name="NewTOKEN">
-        <option value="">-- Veuillez choisir un token --</option>
-        <option v-for="token in state.otherDevices" :key="token.id" :value="token.id">{{ token.id }}</option>
-      </select>
-      <button class="is-primary">Valider le token</button>
-    </form>
 </template>
 <style scoped>
 
 </style>
+
+
