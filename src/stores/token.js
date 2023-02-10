@@ -8,6 +8,7 @@ export const useTokenStore = defineStore(
       BASE: '',
       TOKEN: '',
       OBJ: '',
+      DOMAIN: null
     });
     function setDefaultBasicUrl() {
       state.BASE = 'https://74b3jzk3.directus.app/items/';

@@ -23,7 +23,7 @@ export const useSessionStore = defineStore('session', () => {
 
         if (useUserStore().isConnected) {
             if(isRouteOuverte(route)) {
-                router.push('/DisplayDevice');
+                router.push('/');
             } else {
                 return true;
             }

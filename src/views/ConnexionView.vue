@@ -2,33 +2,46 @@
 import { inject, reactive } from 'vue'
 import {BASE} from "../../public/config";
 import {useUserStore} from "@/stores/user";
+import {useTokenStore} from "@/stores/token";
 
 const axios = inject('axios');
 const router = inject('router');
 const session = inject('session');
+const token = useTokenStore();
 
 let user = reactive({
-  email: 'canals@gmail.com',
-  password: 'canals'
+  email: '',
+  password: ''
 });
 
 let data = reactive({
   status: "",
+  token: "",
+  domaine: 0
 })
 
 async function validationFormulaire() {
   axios.post(`${BASE}auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
+    data.token = response.data.data.access_token;
   }).catch(() => {
       alert("Adresse e-mail ou mot de passe incorrect !");
   }).then(() => {
     if(data.status === "OK") {
       useUserStore().setConnected();
       console.log(useUserStore().isConnected);
-      router.push('/DisplayDevice');
+      recupDomain();
+      router.push('/');
     }
   })
 
+}
+
+function recupDomain() {
+  axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${data.token}&fields=Domaine`).then((response) => {
+      data.domaine = response.data;
+      token.state.DOMAIN = data.domaine.data.Domaine;
+  });
 }
 </script>
 
@@ -52,12 +65,7 @@ async function validationFormulaire() {
 
       <div class="field is-grouped">
         <div class="control">
-          <button>
-            <router-link to="/" >Annuler</router-link>
-          </button>
-        </div>
-        <div class="control">
-          <button class="is-primary">Se connecter</button>
+          <button class="is-primary">Connexion</button>
         </div>
       </div>
     </form>
