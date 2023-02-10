@@ -16,17 +16,19 @@ let data = reactive({
   status: "",
 })
 
-function validationFormulaire() {
+async function validationFormulaire() {
   axios.post(`${BASE}auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
+  }).catch(() => {
+      alert("Adresse e-mail ou mot de passe incorrect !");
+  }).then(() => {
+    if(data.status === "OK") {
+      useUserStore().setConnected();
+      console.log(useUserStore().isConnected);
+      router.push('/DisplayDevice');
+    }
   })
-  if(data.status === "OK") {
-    useUserStore().setConnected();
-    console.log(useUserStore().isConnected);
-    router.push('/DisplayDevice');
-  } else {
-    alert("Adresse e-mail ou mot de passe incorrect !");
-  }
+
 }
 </script>
 
