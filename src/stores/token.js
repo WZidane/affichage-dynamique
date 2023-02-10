@@ -5,9 +5,9 @@ export const useTokenStore = defineStore(
   'token',
   () => {
     const state = reactive({
-      BASE: '',
-      TOKEN: '',
-      OBJ: '',
+      BASE: 'https://74b3jzk3.directus.app/items/',
+      TOKEN: '2f998884-e4c3-4cb3-9ae5-6bb2a4f43376',
+      OBJ: 'Dispositif_Affichage/',
       DOMAIN: null
     });
     /*
