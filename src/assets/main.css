@@ -1,35 +1,128 @@
-@import './base.css';
+/*@import './base.css'; //css de base de vue.js*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --blue1: #039be5;
+  --blue2: #026fa6;
+  --blue3: #014466;
+  --black: #181818;
+  --white: #ffffff;
+  --dark-white: #fafafa;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+html, body, div, span{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: var(--blue1);
+  transition: all 0.3s ease;
+}
+a:hover{
+  color: var(--blue3);
+}
+
+img {
+  width: 100%;
+}
+
+input, select {
+  min-width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  padding: 5px 10px;
+  border: 2px solid grey;
+  background-color: var(--dark-white);
+}
+
+input:focus, select:focus {
+  outline: none;
+  border: 2px solid black;
+}
+
+button {
+  min-width: 40px;
+  min-height: 40px;
+  color: var(--blue1);
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  border-radius: 20px;
+  border: 2px solid var(--blue1);
+  background: var(--white);
+}
+.is-primary {
+  background: var(--blue1);
+  color: var(--white);
+}
+
+.is-primary > a {
+  color: var(--white);
+}
+
+button:hover {
+  background: var(--white);
+  color: var(--blue2);
+  border: 2px solid var(--blue2);
+}
+.is-primary > a:hover {
+  color: var(--blue2);
+}
+
+
+h1{
+  text-align: center;
+}
+
 
 #app {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+}
 
+body {
+  display: flex;
+  place-items: center;
+  height: 100vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 20px;
+  box-shadow: 20px 20px 60px #d9d9d9,-20px -20px 60px #fff;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.field{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.is-grouped {
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.is-grouped > .control > button {
+  width: 120px;
+}
+
+h2 > span, h3 > span{
   font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
 }
