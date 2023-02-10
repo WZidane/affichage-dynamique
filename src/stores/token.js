@@ -16,7 +16,7 @@ export const useTokenStore = defineStore(
       state.OBJ = 'Dispositif_Affichage/';
     }
     function setDefaultToken() {
-      state.TOKEN = 'faaaa268-c9d2-44c9-905f-66c5bb476258';
+      state.TOKEN = 'a5e3c94f-c480-414b-b092-e6ce0f55c3ca';
     }
     return { state, setDefaultBasicUrl, setDeviceObj, setDefaultToken };
   },

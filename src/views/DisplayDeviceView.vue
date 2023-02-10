@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "../stores/token";
 import { marked } from 'marked';
+import { nextTick } from 'vue'
 
 const token = useTokenStore();
 const axios = inject('axios');
@@ -57,6 +58,7 @@ function minutesToSecondes(m) {
 function getDeviceInformation() {
     axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree,Ecrans.id,Ecrans.Ordre_Dispositif_Ecran`).then(response => {
         state.Device = response.data
+        console.log(state.Device)
         state.ecrans = state.Device.data.Ecrans;
         state.ecrans.sort((a, b) => {
             return a.Ordre_Dispositif_Ecran - b.Ordre_Dispositif_Ecran
@@ -74,22 +76,23 @@ function getDeviceInformation() {
 
 
         });
-
         // console.log(state.Durees[0])
-        console.log(state.Durees[state.dataIndex])
-        console.log(state.Durees[1])
+
         // for (let i = 0; i < state.Durees.length; i++) {
         // console.log(state.Durees[i])
         setInterval(() => {
 
             state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
-            console.log(state.Durees[state.dataIndex])
-            // nextTick(() => {
-            //     console.log(state.htmlData[state.dataIndex]);
-            // });
+            nextTick(() => {
+                state.i = state.Durees[state.dataIndex]
+                console.log(state.i)
+                // console.log(state.Durees[state.dataIndex]);
+            });
         }
-            , state.Durees[state.dataIndex]
+            , 3000
         );
+        console.log(state.Durees[state.dataIndex])
+
         // }
 
         // setInterval(() => {
@@ -100,6 +103,13 @@ function getDeviceInformation() {
 
     })
 }
+
+// function playAnimation(time) {
+//     window.requestAnimationFrame(playAnimation)
+//     console.log
+//     // 3108.748
+// }
+// window.requestAnimationFrame(playAnimation)
 // function sortedEcrans() {
 //     console.log(state.ecrans)
 
