@@ -15,7 +15,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-html, body, div, span, ul {
+html, body, div, span{
   margin: 0;
   padding: 0;
   border: 0;
@@ -66,10 +66,17 @@ button {
   color: var(--white);
 }
 
+.is-primary > a {
+  color: var(--white);
+}
+
 button:hover {
   background: var(--white);
   color: var(--blue2);
   border: 2px solid var(--blue2);
+}
+.is-primary > a:hover {
+  color: var(--blue2);
 }
 
 
@@ -116,6 +123,6 @@ form {
   width: 120px;
 }
 
-h2 > span{
+h2 > span, h3 > span{
   font-weight: normal;
 }

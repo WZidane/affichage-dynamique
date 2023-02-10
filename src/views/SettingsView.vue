@@ -45,15 +45,15 @@ async function getDeviceInformation() {
 
 </script>
 <template>
-    <h1>Les réglages de la base sont :</h1>
-    <h2>Vous êtes actuellement sur le domaine: {{ state.Domain.Nom_Domaine }}</h2>
-    <h2>Voici les données sur le dispositif d'affichage : {{ state.NameDevice }}</h2>
-    <h3>Identifiant du dispositif : {{ token.state.TOKEN }}</h3>
+    <h1>Réglages de base</h1>
+    <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
+    <h2>Données du dispositif d'affichage : <span>{{ state.NameDevice }}</span></h2>
+    <h3>Identifiant du dispositif : <span>{{ token.state.TOKEN }}</span></h3>
     <div>
         <h3 v-if="state.SequenceLength <= 0">Ce dispositif ne contient aucune séquence</h3>
-        <h3 v-if="state.SequenceLength == 1">Ce dispositif contient {{ state.SequenceLength }} séquence qui s'appelle : {{ state.NameSequences[0] }}</h3>
+        <h3 v-if="state.SequenceLength == 1">Ce dispositif contient {{ state.SequenceLength }} séquence : <span>{{ state.NameSequences[0] }}</span></h3>
         <div v-if="state.SequenceLength >= 2">
-            <h3>Ce dispositif contient {{ state.SequenceLength }} séquences qui s'appellent :</h3>
+            <h3>Ce dispositif contient {{ state.SequenceLength }} séquences :</h3>
             <ul>
                 <li v-for="Nom_Sequence in state.NameSequences">
                     {{ Nom_Sequence }}
@@ -63,9 +63,9 @@ async function getDeviceInformation() {
     </div>
     <div>
         <h3 v-if="state.EcranLength <= 0">Ce dispositif ne contient aucun écran</h3>
-        <h3 v-if="state.EcranLength == 1">Ce dispositif contient {{ state.EcranLength }} écran qui s'appelle : {{ state.NameEcrans[0] }}</h3>
+        <h3 v-if="state.EcranLength == 1">Ce dispositif contient {{ state.EcranLength }} écran : <span>{{ state.NameEcrans[0] }}</span></h3>
         <div v-if="state.EcranLength >= 2">
-            <h3>Ce dispositif contient {{ state.EcranLength }} séquences qui s'appellent :</h3>
+            <h3>Ce dispositif contient {{ state.EcranLength }} séquences :</h3>
             <ul>
                 <li v-for="Nom_Ecran in state.NameEcrans">
                     {{ Nom_Ecran }}
@@ -75,8 +75,8 @@ async function getDeviceInformation() {
     </div>
     <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
 
-    <button>
-        <RouterLink to="UpdateDevice">Update</RouterLink>
+    <button class="is-primary">
+        <RouterLink to="UpdateDevice">Mettre à jour</RouterLink>
     </button>
 </template>
 <style scoped>
