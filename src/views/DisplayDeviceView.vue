@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
-import { useTokenStore } from "../stores/token";
+import { useTokenStore } from "@/stores/token";
 import { marked } from 'marked';
 
 const token = useTokenStore();
@@ -27,10 +27,12 @@ let state = reactive({
 
 onMounted(() => {
     console.log('one device');
-
+/*
     token.setDefaultBasicUrl();
     token.setDeviceObj();
     token.setDefaultToken();
+
+ */
     getDeviceInformation();
 
 

@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
-import { useTokenStore } from "../stores/token";
+import { useTokenStore } from "@/stores/token";
 
 const axios = inject('axios');
 const token = useTokenStore();
@@ -13,14 +13,16 @@ let state = reactive({
 
 onMounted(() => {
     console.log('Settings');
+    /*
     token.setDefaultBasicUrl();
     token.setDeviceObj();
     token.setDefaultToken();
+     */
     getDeviceInformation();
 })
 
-function getDeviceInformation() {
-    axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Domaine.Nom_Domaine`).then(response => {
+async function getDeviceInformation() {
+    await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Domaine.Nom_Domaine`).then(response => {
         state.Device = response.data
         state.Domain = state.Device.data.Domaine
         state.NameDevice = state.Device.data.Nom_Dispositif
