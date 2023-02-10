@@ -7,7 +7,7 @@
   --blue3: #014466;
   --black: #181818;
   --white: #ffffff;
-  --dark-white: #ededed;
+  --dark-white: #fafafa;
 }
 
 * {
@@ -15,15 +15,11 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-html, body, div, span, ul {
+html, body, div, span{
   margin: 0;
   padding: 0;
   border: 0;
   font-size: 100%;
-}
-
-ol, ul {
-  list-style: none;
 }
 
 a {
@@ -39,15 +35,16 @@ img {
   width: 100%;
 }
 
-input {
+input, select {
   min-width: 100px;
   height: 40px;
   border-radius: 20px;
   padding: 5px 10px;
   border: 2px solid grey;
+  background-color: var(--dark-white);
 }
 
-input:focus {
+input:focus, select:focus {
   outline: none;
   border: 2px solid black;
 }
@@ -69,10 +66,17 @@ button {
   color: var(--white);
 }
 
+.is-primary > a {
+  color: var(--white);
+}
+
 button:hover {
   background: var(--white);
   color: var(--blue2);
   border: 2px solid var(--blue2);
+}
+.is-primary > a:hover {
+  color: var(--blue2);
 }
 
 
@@ -99,6 +103,8 @@ form {
   padding: 1em;
   border-radius: 20px;
   box-shadow: 20px 20px 60px #d9d9d9,-20px -20px 60px #fff;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .field{
@@ -115,4 +121,8 @@ form {
 
 .is-grouped > .control > button {
   width: 120px;
+}
+
+h2 > span, h3 > span{
+  font-weight: normal;
 }
