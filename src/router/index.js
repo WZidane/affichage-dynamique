@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue';
 import DisplayDeviceView from '../views/DisplayDeviceView.vue';
 import UpdateDeviceView from '../views/UpdateDeviceView.vue';
 import SettingsView from '../views/SettingsView.vue';
-import ConnexionView from "@/views/ConnexionView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,16 +27,6 @@ const router = createRouter({
       path: '/Settings',
       name: 'Settings',
       component: SettingsView,
-    },
-    {
-      path: '/se-connecter',
-      name: 'se-connecter',
-      component: ConnexionView,
-    },
-    {
-      path: '/DisplayDevice',
-      name: 'DisplayDevice',
-      component: DisplayDeviceView,
     },
   ],
 });
