@@ -40,7 +40,7 @@ async function recupDomain() {
       data.domaine = response.data;
       token.setDomain(data.domaine.data.Domaine);
   }).then(() => {
-    router.push('/Settings');
+    router.push('/UpdateDevice');
   });
 }
 </script>

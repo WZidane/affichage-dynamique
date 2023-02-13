@@ -49,7 +49,7 @@ function updateToken(event) {
 }
 
 function update() {
-  router.push('/Settings');
+  router.push('/');
 }
 
 </script>
