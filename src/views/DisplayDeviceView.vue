@@ -85,19 +85,8 @@ function getDeviceInformation() {
 </script>
 <template>
 
-  <div v-html="state.htmlData[state.dataIndex]" class="test">
+  <div class="display" v-html="state.htmlData[state.dataIndex]">
+
   </div>
 
 </template>
-<style scoped>
-.test{
-  color: red;}
-
- .test img{
-  width: 50px;
-  height: 50px;
-}
-
-
-
-</style>
