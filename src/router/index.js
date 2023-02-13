@@ -27,12 +27,7 @@ const router = createRouter({
       path: '/UpdateDevice',
       name: 'UpdateDevice',
       component: UpdateDeviceView,
-    },
-    {
-      path: '/DisplayDevice',
-      name: 'DisplayDevice',
-      component: DisplayDeviceView,
-    },
+    }
   ],
 });
 

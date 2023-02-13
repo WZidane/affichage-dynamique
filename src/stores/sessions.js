@@ -23,7 +23,7 @@ export const useSessionStore = defineStore('session', () => {
 
         if (useUserStore().isConnected) {
             if(isRouteOuverte(route)) {
-                router.push('/');
+                await router.push('/');
             } else {
                 return true;
             }
@@ -35,8 +35,6 @@ export const useSessionStore = defineStore('session', () => {
             }
         }
     }
-
-
     return {
         isValid,
         isRouteOuverte
