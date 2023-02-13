@@ -19,7 +19,7 @@ export const useSessionStore = defineStore('session', () => {
     }
 
     async function isValid() {
-        console.log('IsValid ?');
+        //console.log('IsValid ?');
 
         if (useUserStore().isConnected) {
             if(isRouteOuverte(route)) {

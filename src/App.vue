@@ -1,6 +1,6 @@
 <script setup>
 
-import Navbar from '@/components/Navbar.vue';
+import Navbar from '@/components/NavBar.vue';
 import { computed, provide, onMounted, reactive, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import {useSessionStore} from "@/stores/sessions";
