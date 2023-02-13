@@ -28,17 +28,16 @@ async function getDeviceInformation() {
     //await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine`).then(response => {
     await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&limit=1`).then(response => {
       state.Device = response.data
-      //state.Domain = state.Device.data.Domaine
-      //state.NameDevice = state.Device.data.Nom_Dispositif
-      //state.SequenceLength = state.Device.data.Sequences.length
-      //state.EcranLength = state.Device.data.Ecrans.length
-      console.log(state.Device)
-        
+      state.Domain = state.Device.data[0]
+      state.NameDevice = state.Device.data[0].Nom_Dispositif
+      state.SequenceLength = state.Device.data[0].Sequences.length
+      state.EcranLength = state.Device.data[0].Ecrans.length
+
         for (let i = 0; i < state.SequenceLength; i++) {
-            state.NameSequences[i] = state.Device.data.Sequences[i].Sequence_id.Nom_Sequence
+            state.NameSequences[i] = state.Device.data[0].Sequences[i].Sequence_id.Nom_Sequence
         }
         for (let i = 0; i < state.EcranLength; i++) {
-            state.NameEcrans[i] = state.Device.data.Ecrans[i].Ecran_id.Nom_Ecran
+            state.NameEcrans[i] = state.Device.data[0].Ecrans[i].Ecran_id.Nom_Ecran
         }
     })
 }
