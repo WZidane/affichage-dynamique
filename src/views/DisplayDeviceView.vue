@@ -139,7 +139,7 @@ function getDeviceInformation() {
 <template>
   <!-- <h1>Affichage</h1> -->
   <!-- <button @click="displayData">go</button> -->
-  <div v-html="state.htmlData[state.dataIndex]">
+  <div class="display" v-html="state.htmlData[state.dataIndex]">
 
   </div>
 
