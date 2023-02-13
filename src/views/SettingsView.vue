@@ -25,29 +25,46 @@ onMounted(() => {
 })
 
 async function getDeviceInformation() {
-    //await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine`).then(response => {
-    await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&limit=1`).then(response => {
-      state.Device = response.data
-      state.Domain = state.Device.data[0]
-      state.NameDevice = state.Device.data[0].Nom_Dispositif
-      state.SequenceLength = state.Device.data[0].Sequences.length
-      state.EcranLength = state.Device.data[0].Ecrans.length
+    if(token.state.TOKEN == '') {
+      await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&limit=1`).then(response => {
+        state.Device = response.data
+        state.Domain = state.Device.data[0].Domaine
+        state.NameDevice = state.Device.data[0].Nom_Dispositif
+        state.SequenceLength = state.Device.data[0].Sequences.length
+        state.EcranLength = state.Device.data[0].Ecrans.length
 
         for (let i = 0; i < state.SequenceLength; i++) {
-            state.NameSequences[i] = state.Device.data[0].Sequences[i].Sequence_id.Nom_Sequence
+          state.NameSequences[i] = state.Device.data[0].Sequences[i].Sequence_id.Nom_Sequence
         }
         for (let i = 0; i < state.EcranLength; i++) {
-            state.NameEcrans[i] = state.Device.data[0].Ecrans[i].Ecran_id.Nom_Ecran
+          state.NameEcrans[i] = state.Device.data[0].Ecrans[i].Ecran_id.Nom_Ecran
         }
-    })
-}
+      })
+      } else {
+          await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}`).then(response => {
+            state.Device = response.data
+            state.DeviceId = state.Device.data[0].id
+            state.Domain = state.Device.data[0].Domaine
+            state.NameDevice = state.Device.data[0].Nom_Dispositif
+            state.SequenceLength = state.Device.data[0].Sequences.length
+            state.EcranLength = state.Device.data[0].Ecrans.length
+
+            for (let i = 0; i < state.SequenceLength; i++) {
+              state.NameSequences[i] = state.Device.data[0].Sequences[i].Sequence_id.Nom_Sequence
+            }
+            for (let i = 0; i < state.EcranLength; i++) {
+              state.NameEcrans[i] = state.Device.data[0].Ecrans[i].Ecran_id.Nom_Ecran
+            }
+          })
+        }
+    }
 
 </script>
 <template>
     <h1>Réglages de base</h1>
     <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
     <h2>Données du dispositif d'affichage : <span>{{ state.NameDevice }}</span></h2>
-    <h3>Identifiant du dispositif : <span>{{ token.state.TOKEN }}</span></h3>
+    <h3>Identifiant du dispositif : <span>{{ state.DeviceId }}</span></h3>
     <div>
         <h3 v-if="state.SequenceLength <= 0">Ce dispositif ne contient aucune séquence</h3>
         <h3 v-if="state.SequenceLength == 1">Ce dispositif contient {{ state.SequenceLength }} séquence : <span>{{ state.NameSequences[0] }}</span></h3>
