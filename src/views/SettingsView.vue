@@ -16,7 +16,6 @@ let state = reactive({
 });
 
 onMounted(() => {
-    console.log('Settings');
     /*
     token.setDefaultBasicUrl();
     token.setDeviceObj();
@@ -26,12 +25,14 @@ onMounted(() => {
 })
 
 async function getDeviceInformation() {
-    await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine`).then(response => {
-        state.Device = response.data
-        state.Domain = state.Device.data.Domaine
-        state.NameDevice = state.Device.data.Nom_Dispositif
-        state.SequenceLength = state.Device.data.Sequences.length
-        state.EcranLength = state.Device.data.Ecrans.length
+    //await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine`).then(response => {
+    await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&limit=1`).then(response => {
+      state.Device = response.data
+      //state.Domain = state.Device.data.Domaine
+      //state.NameDevice = state.Device.data.Nom_Dispositif
+      //state.SequenceLength = state.Device.data.Sequences.length
+      //state.EcranLength = state.Device.data.Ecrans.length
+      console.log(state.Device)
         
         for (let i = 0; i < state.SequenceLength; i++) {
             state.NameSequences[i] = state.Device.data.Sequences[i].Sequence_id.Nom_Sequence
@@ -39,7 +40,6 @@ async function getDeviceInformation() {
         for (let i = 0; i < state.EcranLength; i++) {
             state.NameEcrans[i] = state.Device.data.Ecrans[i].Ecran_id.Nom_Ecran
         }
-        console.log(state.Device.data.Ecrans)
     })
 }
 

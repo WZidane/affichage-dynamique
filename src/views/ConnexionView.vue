@@ -28,7 +28,7 @@ async function validationFormulaire() {
   }).then(() => {
     if(data.status === "OK") {
       useUserStore().setConnected();
-      console.log(useUserStore().isConnected);
+      //console.log(useUserStore().isConnected);
       recupDomain();
     }
   })
