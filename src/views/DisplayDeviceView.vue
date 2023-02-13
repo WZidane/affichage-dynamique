@@ -11,11 +11,12 @@ let state = reactive({
   Device: {},
   sequences: [],
   ecrans: [],
+  SequenceEcrans : [],
   visible: false,
   htmlData: [],
+  htmlSData:[],
   Durees: [],
   newDevice: {},
-  asba: {},
   i: 0,
 
   dataIndex: 0,
@@ -24,34 +25,15 @@ let state = reactive({
 
 });
 
-// (state.Durees).forEach(duree => {
-//     duree
-// })
 
 
 onMounted(() => {
   console.log('one device');
-  /*
-  token.setDefaultBasicUrl();
-  token.setDeviceObj();
-  token.setDefaultToken();
-   */
   getDeviceInformation();
-  // start();
-  // setInterval(() => {
-  //     state.currentIndex = (state.currentIndex + 1) % state.htmlData.length
-  // }
-  //     , 9000);
-  // console.log(state.Durees)
+
 
 })
-// async function start() {
-//     // console.log(state.Durees)
-//     await setInterval(() => {
-//         state.currentIndex = (state.currentIndex + 1) % state.htmlData.length
-//     }
-//         , 9000);
-// }
+
 function minutesToSecondes(m) {
   return (Math.trunc(m) * 60 + (1 / (m - Math.trunc(m)))) * 1000
 }
@@ -61,95 +43,84 @@ function getDeviceInformation() {
     state.Device = response.data
     console.log(state.Device)
     state.ecrans = state.Device.data.Ecrans;
+
+    //SEQUENCE
+    state.sequences = state.Device.data.Sequences;
+
+    state.sequences.sort((a, b) => {
+      return a.Ordre_Sequence - b.Ordre_Sequence
+    })
+    console.log(state.sequences);
+    let permenantSequenceEcrans = [];
+        (state.sequences).forEach(sequence => {
+      console.log(sequence.Sequence_id.Ecrans)
+          permenantSequenceEcrans.push( sequence.Sequence_id.Ecrans) ;
+      console.log(permenantSequenceEcrans)
+    })
+    console.log(permenantSequenceEcrans);
+
+        let oneTabSequenceEcrans = [];
+    oneTabSequenceEcrans = permenantSequenceEcrans.reduce((acc,current)=> acc.concat(current),[]);
+    console.log((oneTabSequenceEcrans));
+  console.log(state.ecrans);
+    let seen = new Set();
+
+    state.SequenceEcrans = oneTabSequenceEcrans.reduce((acc, obj) => {
+      let value = obj.Ordre_Ecran;
+      while (seen.has(value)) {
+        value++;
+      }
+      seen.add(value);
+      acc.push({...obj, Ordre_Ecran: value});
+      return acc;
+    }, []);
+
+    console.log(state.SequenceEcrans);
+    console.log(state.ecrans);
+
+//***********************
+
     state.ecrans.sort((a, b) => {
       return a.Ordre_Dispositif_Ecran - b.Ordre_Dispositif_Ecran
-    })
+    });
 
-    state.sequences = state.Device.data.Sequences;
+
     (state.ecrans).forEach(ecran => {
       console.log(ecran)
       state.htmlData.push(marked(ecran.Ecran_id.Donnees))
       state.Durees.push(minutesToSecondes(ecran.Ecran_id.Duree))
-
-
-      console.log(state.htmlData)
-      console.log(state.Durees)
-
-
     });
-    // console.log(state.Durees[0])
 
-    // for (let i = 0; i < state.Durees.length; i++) {
-    // console.log(state.Durees[i])
+    (state.SequenceEcrans).forEach(ecran => {
+       state.htmlSData.push((marked(ecran.Ecran_id.Donnees)));
+
+    })
+
     setInterval(() => {
 
-          state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
+          state.dataIndex = (state.dataIndex + 1) % state.htmlSData.length
           nextTick(() => {
-            state.i = state.Durees[state.dataIndex]
-            console.log(state.i)
+          // state.i = state.Durees[state.dataIndex]
+          //  console.log(state.i)
             // console.log(state.Durees[state.dataIndex]);
           });
         }
         , 3000
     );
-    console.log(state.Durees[state.dataIndex])
 
-    // }
 
-    // setInterval(() => {
-    //     state.currentIndex = (state.currentIndex + 1) % state.htmlData.length
-    //     console.log(state.Durees[state.currentIndex])
-    // }
-    //     , state.Durees[state.currentIndex]);
 
   })
 }
 
-// function playAnimation(time) {
-//     window.requestAnimationFrame(playAnimation)
-//     console.log
-//     // 3108.748
-// }
-// window.requestAnimationFrame(playAnimation)
-// function sortedEcrans() {
-//     console.log(state.ecrans)
-
-//     return state.ecrans.sort((a, b) => {
-//         a.Ordre_Dispositif_Ecran - b.Ordre_Dispositif_Ecran
-//     })
-
-// }
-
-
-// function displayData() {
-
-//     (state.htmlData).forEach(data => {
-//         console.log(data)
-//         setTimeout(() => {
-//             state.dataToDislay = data
-//             console.log(state.dataToDislay)
-//         }, 3000)
-
-//     })
-
-// }
-
 
 </script>
 <template>
-  <!-- <h1>Affichage</h1> -->
-  <!-- <button @click="displayData">go</button> -->
-  <div v-html="state.htmlData[state.dataIndex]">
+
+  <div v-html="state.htmlSData[state.dataIndex]">
 
   </div>
 
-  <!-- <template v-for="ecran in state.htmlData" :key="ecran.id">
-      <div v-html="ecran">
-
-      </div>
-
-
-  </template> -->
 </template>
 <style scoped>
 
