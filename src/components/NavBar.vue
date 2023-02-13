@@ -36,9 +36,5 @@ const user = useUserStore();
     </template>
   </nav>
 </template>
-<style scoped>
-.navbar {
-  box-shadow: 0 0 5px;
-}
-</style>
+
 

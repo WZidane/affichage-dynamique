@@ -89,6 +89,7 @@ h1{
   align-items: center;
   justify-content: space-between;
   padding: 0.5em 1.5em;
+  box-shadow: 0 0 5px;
 }
 .navbar-menu{
   display: flex;
