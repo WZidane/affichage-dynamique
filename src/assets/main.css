@@ -53,13 +53,14 @@ button {
   min-width: 40px;
   min-height: 40px;
   color: var(--blue1);
-  padding: 5px 10px;
+  padding: 5px 1em;
   cursor: pointer;
   transition: all 0.3s ease;
   outline: none;
   border-radius: 20px;
   border: 2px solid var(--blue1);
   background: var(--white);
+  font-size: medium;
 }
 .is-primary {
   background: var(--blue1);
@@ -82,6 +83,7 @@ button:hover {
 
 h1{
   text-align: center;
+  font-size: xx-large;
 }
 
 .navbar{
@@ -113,7 +115,7 @@ form {
   border-radius: 20px;
   box-shadow: 20px 20px 60px #d9d9d9,-20px -20px 60px #fff;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 1em auto;
 }
 
 .field{
