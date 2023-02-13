@@ -28,7 +28,7 @@ async function validationFormulaire() {
   }).then(() => {
     if(data.status === "OK") {
       useUserStore().setConnected();
-      console.log(useUserStore().isConnected);
+      //console.log(useUserStore().isConnected);
       recupDomain();
     }
   })
@@ -41,7 +41,6 @@ async function recupDomain() {
       token.state.DOMAIN = data.domaine.data.Domaine;
   }).then(()=>{
     router.push('/Settings');
-
   });
 }
 </script>

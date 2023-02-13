@@ -9,6 +9,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Settings',
+      component: SettingsView,
+    },
+    {
+      path: '/se-connecter',
       name: 'se-connecter',
       component: ConnexionView,
     },
@@ -21,18 +26,7 @@ const router = createRouter({
       path: '/UpdateDevice',
       name: 'UpdateDevice',
       component: UpdateDeviceView,
-    },
-    {
-      path: '/Settings',
-      name: 'Settings',
-      component: SettingsView,
-    },
-
-    {
-      path: '/DisplayDevice',
-      name: 'DisplayDevice',
-      component: DisplayDeviceView,
-    },
+    }
   ],
 });
 
