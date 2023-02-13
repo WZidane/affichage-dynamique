@@ -28,18 +28,19 @@ async function validationFormulaire() {
   }).then(() => {
     if(data.status === "OK") {
       useUserStore().setConnected();
-      console.log(useUserStore().isConnected);
+      //console.log(useUserStore().isConnected);
       recupDomain();
-      router.push('/');
     }
   })
 
 }
 
-function recupDomain() {
-  axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${data.token}&fields=Domaine`).then((response) => {
+async function recupDomain() {
+  await axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${data.token}&fields=Domaine`).then((response) => {
       data.domaine = response.data;
-      token.state.DOMAIN = data.domaine.data.Domaine;
+      token.setDomain(data.domaine.data.Domaine);
+  }).then(() => {
+    router.push('/Settings');
   });
 }
 </script>
