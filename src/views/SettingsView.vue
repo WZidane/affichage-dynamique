@@ -31,15 +31,11 @@ async function getDeviceInformation() {
         state.Domain = state.Device.data.Domaine
         state.NameDevice = state.Device.data.Nom_Dispositif
         state.SequenceLength = state.Device.data.Sequences.length
-        state.EcranLength = state.Device.data.Ecrans.length
-        
+
         for (let i = 0; i < state.SequenceLength; i++) {
             state.NameSequences[i] = state.Device.data.Sequences[i].Sequence_id.Nom_Sequence
         }
-        for (let i = 0; i < state.EcranLength; i++) {
-            state.NameEcrans[i] = state.Device.data.Ecrans[i].Ecran_id.Nom_Ecran
-        }
-        console.log(state.Device.data.Ecrans)
+
     })
 }
 
@@ -61,18 +57,7 @@ async function getDeviceInformation() {
             </ul>
         </div>
     </div>
-    <div>
-        <h3 v-if="state.EcranLength <= 0">Ce dispositif ne contient aucun écran</h3>
-        <h3 v-if="state.EcranLength == 1">Ce dispositif contient {{ state.EcranLength }} écran : <span>{{ state.NameEcrans[0] }}</span></h3>
-        <div v-if="state.EcranLength >= 2">
-            <h3>Ce dispositif contient {{ state.EcranLength }} séquences :</h3>
-            <ul>
-                <li v-for="Nom_Ecran in state.NameEcrans">
-                    {{ Nom_Ecran }}
-                </li>
-            </ul>
-        </div>
-    </div>
+
     <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
 
     <button class="is-primary">
