@@ -38,9 +38,11 @@ async function validationFormulaire() {
 async function recupDomain() {
   await axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${data.token}&fields=Domaine`).then((response) => {
       data.domaine = response.data;
+
       token.setDomain(data.domaine.data.Domaine);
   }).then(() => {
     router.push('/UpdateDevice');
+
   });
 }
 </script>
