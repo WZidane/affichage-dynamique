@@ -6,23 +6,28 @@ export const useTokenStore = defineStore(
   () => {
     const state = reactive({
       BASE: 'https://74b3jzk3.directus.app/items/',
-      TOKEN: '2f998884-e4c3-4cb3-9ae5-6bb2a4f43376',
+      TOKEN: '',
       OBJ: 'Dispositif_Affichage/',
       DOMAIN: null
     });
-    /*
-    function setDefaultBasicUrl() {
-      state.BASE = 'https://74b3jzk3.directus.app/items/';
-    }
-    function setDeviceObj() {
-      state.OBJ = 'Dispositif_Affichage/';
-    }
-    function setDefaultToken() {
-      state.TOKEN = 'faaaa268-c9d2-44c9-905f-66c5bb476258';
-    }
-     */
 
-    return { state /*,setDefaultBasicUrl, setDeviceObj, setDefaultToken*/ };
+    function setToken(token) {
+        return this.state.TOKEN = token;
+    }
+
+    function getToken() {
+        return state.TOKEN;
+    }
+
+    function setDomain(domain) {
+        return this.state.DOMAIN = domain;
+    }
+
+    function getDomain() {
+        return state.DOMAIN;
+    }
+
+    return { state, setToken, getToken, setDomain, getDomain };
   },
   {
     persist: true,
