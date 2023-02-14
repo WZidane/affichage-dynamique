@@ -46,7 +46,9 @@ export const useSessionStore = defineStore('session', () => {
                 }
             }
         })
-
+        router.afterEach(async () => {
+            await localStorage.clear();
+        })
     }
     return {
         isValid,
