@@ -15,7 +15,6 @@ export const useSessionStore = defineStore('session', () => {
         routesTab.push(element.name);
     })
 
-
     /**
      * La route courante est "ouverte"
      * et ne nécéssite pas d'être identifié
@@ -30,22 +29,24 @@ export const useSessionStore = defineStore('session', () => {
 
     async function isValid() {
         //console.log('IsValid ?');
+        router.afterEach(() => {
+            // Exécuter une fonction à chaque changement de page
 
-        if (useUserStore().isConnected) {
-            if(isRouteOuverte(route)) {
-                await router.push('/');
-            } else if (isRouteAllowed(route)) {
-                return true;
+            if (useUserStore().isConnected) {
+                if((isRouteOuverte(route)) || (isRouteAllowed(route) === false)) {
+                    router.push('/');
+                } else {
+                    return true;
+                }
             } else {
-                await router.push('/');
+                if (isRouteOuverte(route)) {
+                    return true;
+                } else {
+                    global.seConnecter();
+                }
             }
-        } else {
-            if (isRouteOuverte(route)) {
-                return true;
-            } else {
-                global.seConnecter();
-            }
-        }
+        })
+
     }
     return {
         isValid,
