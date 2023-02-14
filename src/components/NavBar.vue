@@ -24,7 +24,7 @@ const user = useUserStore();
             Affichage
           </router-link>
 
-          <router-link to="/Settings" class="navbar-item">
+          <router-link to="/" class="navbar-item">
             Paramètres
           </router-link>
 

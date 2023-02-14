@@ -42,7 +42,6 @@ async function recupDomain() {
       token.setDomain(data.domaine.data.Domaine);
   }).then(() => {
     router.push('/UpdateDevice');
-
   });
 }
 </script>
