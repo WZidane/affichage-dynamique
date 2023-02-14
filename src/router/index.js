@@ -17,7 +17,6 @@ const router = createRouter({
       name: 'se-connecter',
       component: ConnexionView,
     },
-
     {
       path: '/DisplayDevice',
       name: 'DisplayDevice',

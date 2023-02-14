@@ -11,8 +11,6 @@ let state = reactive({
     NameDevice: "",
     NameSequences: [],
     SequenceLength: 0,
-    NameEcrans: [],
-    EcranLength: ""
 });
 
 onMounted(() => {
@@ -25,38 +23,20 @@ onMounted(() => {
 })
 
 async function getDeviceInformation() {
-    if(token.state.TOKEN == '') {
-      await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&limit=1`).then(response => {
-        state.Device = response.data
-        state.Domain = state.Device.data[0].Domaine
-        state.NameDevice = state.Device.data[0].Nom_Dispositif
-        state.SequenceLength = state.Device.data[0].Sequences.length
-        state.EcranLength = state.Device.data[0].Ecrans.length
-
-        for (let i = 0; i < state.SequenceLength; i++) {
-          state.NameSequences[i] = state.Device.data[0].Sequences[i].Sequence_id.Nom_Sequence
-        }
-        for (let i = 0; i < state.EcranLength; i++) {
-          state.NameEcrans[i] = state.Device.data[0].Ecrans[i].Ecran_id.Nom_Ecran
-        }
-      })
-      } else {
-          await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}`).then(response => {
+      await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}`).then(response => {
             state.Device = response.data
-            state.DeviceId = state.Device.data[0].id
-            state.Domain = state.Device.data[0].Domaine
-            state.NameDevice = state.Device.data[0].Nom_Dispositif
-            state.SequenceLength = state.Device.data[0].Sequences.length
-            state.EcranLength = state.Device.data[0].Ecrans.length
+            state.DeviceId = token.state.TOKEN
+            state.Domain = state.Device.data.Domaine
+            state.NameDevice = state.Device.data.Nom_Dispositif
+            state.SequenceLength = state.Device.data.Sequences.length
 
             for (let i = 0; i < state.SequenceLength; i++) {
-              state.NameSequences[i] = state.Device.data[0].Sequences[i].Sequence_id.Nom_Sequence
-            }
-            for (let i = 0; i < state.EcranLength; i++) {
-              state.NameEcrans[i] = state.Device.data[0].Ecrans[i].Ecran_id.Nom_Ecran
+              state.NameSequences[i] = state.Device.data.Sequences[i].Sequence_id.Nom_Sequence
             }
           })
-        }
+        console.log(state.Device)
+        console.log(state.Device.data.Sequences)
+        console.log(state.NameSequences)
     }
 
 </script>
@@ -77,22 +57,11 @@ async function getDeviceInformation() {
             </ul>
         </div>
     </div>
-    <div>
-        <h3 v-if="state.EcranLength <= 0">Ce dispositif ne contient aucun écran</h3>
-        <h3 v-if="state.EcranLength == 1">Ce dispositif contient {{ state.EcranLength }} écran : <span>{{ state.NameEcrans[0] }}</span></h3>
-        <div v-if="state.EcranLength >= 2">
-            <h3>Ce dispositif contient {{ state.EcranLength }} séquences :</h3>
-            <ul>
-                <li v-for="Nom_Ecran in state.NameEcrans">
-                    {{ Nom_Ecran }}
-                </li>
-            </ul>
-        </div>
-    </div>
+
     <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
 
-    <button class="is-primary">
-        <RouterLink to="UpdateDevice">Mettre à jour</RouterLink>
+    <button class="is-primary" @click="$router.push('UpdateDevice')">
+        Mettre à jour
     </button>
 </template>
 <style scoped>

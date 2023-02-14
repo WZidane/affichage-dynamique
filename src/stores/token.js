@@ -26,7 +26,6 @@ export const useTokenStore = defineStore(
     function getDomain() {
         return state.DOMAIN;
     }
-
     return { state, setToken, getToken, setDomain, getDomain };
   },
   {
