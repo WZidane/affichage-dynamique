@@ -9,6 +9,12 @@ export const useSessionStore = defineStore('session', () => {
     const route = useRoute();
     const router = useRouter();
     const routesOuvertes = ['se-connecter'];
+    const rout = router.options.routes;
+    const routesTab = [];
+    rout.forEach(element => {
+        routesTab.push(element.name);
+    })
+
 
     /**
      * La route courante est "ouverte"
@@ -18,14 +24,20 @@ export const useSessionStore = defineStore('session', () => {
         return routesOuvertes.includes(route.name);
     }
 
+    function isRouteAllowed(route) {
+        return routesTab.includes(route.name);
+    }
+
     async function isValid() {
         //console.log('IsValid ?');
 
         if (useUserStore().isConnected) {
             if(isRouteOuverte(route)) {
                 await router.push('/');
-            } else {
+            } else if (isRouteAllowed(route)) {
                 return true;
+            } else {
+                await router.push('/');
             }
         } else {
             if (isRouteOuverte(route)) {
