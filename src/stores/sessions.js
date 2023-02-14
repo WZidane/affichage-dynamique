@@ -9,6 +9,11 @@ export const useSessionStore = defineStore('session', () => {
     const route = useRoute();
     const router = useRouter();
     const routesOuvertes = ['se-connecter'];
+    const rout = router.options.routes;
+    const routesTab = [];
+    rout.forEach(element => {
+        routesTab.push(element.name);
+    })
 
     /**
      * La route courante est "ouverte"
@@ -18,25 +23,31 @@ export const useSessionStore = defineStore('session', () => {
         return routesOuvertes.includes(route.name);
     }
 
-    async function isValid() {
-        //console.log('IsValid ?');
-
-        if (useUserStore().isConnected) {
-            if(isRouteOuverte(route)) {
-                router.push('/');
-            } else {
-                return true;
-            }
-        } else {
-            if (isRouteOuverte(route)) {
-                return true;
-            } else {
-                global.seConnecter();
-            }
-        }
+    function isRouteAllowed(route) {
+        return routesTab.includes(route.name);
     }
 
+    async function isValid() {
+        //console.log('IsValid ?');
+        router.afterEach(() => {
+            // Exécuter une fonction à chaque changement de page
 
+            if (useUserStore().isConnected) {
+                if((isRouteOuverte(route)) || (isRouteAllowed(route) === false)) {
+                    router.push('/');
+                } else {
+                    return true;
+                }
+            } else {
+                if (isRouteOuverte(route)) {
+                    return true;
+                } else {
+                    global.seConnecter();
+                }
+            }
+        })
+
+    }
     return {
         isValid,
         isRouteOuverte

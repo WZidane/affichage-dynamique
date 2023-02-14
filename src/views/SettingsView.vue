@@ -60,8 +60,8 @@ async function getDeviceInformation() {
 
     <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
 
-    <button class="is-primary">
-        <RouterLink to="UpdateDevice">Mettre à jour</RouterLink>
+    <button class="is-primary" @click="$router.push('UpdateDevice')">
+        Mettre à jour
     </button>
 </template>
 <style scoped>
