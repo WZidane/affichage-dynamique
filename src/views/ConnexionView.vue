@@ -71,7 +71,7 @@ async function recupDomain() {
 
       <div class="field">
         <label class="label">Mot de passe</label>
-        <input class="input" v-model="user.password" type="password" placeholder="Your password">
+        <input class="input" v-model="user.password" type="password" placeholder="Votre mot de passe">
       </div>
 
       <div class="field is-grouped">
