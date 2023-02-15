@@ -32,6 +32,7 @@ async function validationFormulaire() {
   axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
     data.token = response.data.data.access_token;
+    token.state.USER = data.token;
   }).catch(() => {
       DisplayError();
   }).then(() => {

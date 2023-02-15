@@ -3,8 +3,10 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import { marked } from 'marked';
+import {useSessionStore} from "@/stores/sessions";
 
 const token = useTokenStore();
+const session = useSessionStore();
 const axios = inject('axios');
 
 const h1 = reactive(({

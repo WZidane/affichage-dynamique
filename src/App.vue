@@ -1,7 +1,7 @@
 <script setup>
 
 import Navbar from '@/components/NavBar.vue';
-import { computed, provide, onMounted, reactive, watch } from 'vue';
+import { provide, onMounted, reactive, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import {useSessionStore} from "@/stores/sessions";
 
@@ -22,8 +22,6 @@ const session = useSessionStore();
 provide('session', session);
 
 const route = useRoute();
-
-const afficherNav = computed(() => !session.isRouteOuverte(route));
 
 watch(route, () => {
   demarrer();

@@ -8,9 +8,14 @@ export const useSessionStore = defineStore('session', () => {
     const global = useGlobal();
     const route = useRoute();
     const router = useRouter();
+    const user = useUserStore();
+
     const routesOuvertes = ['se-connecter'];
+
     const rout = router.options.routes;
+
     const routesTab = [];
+
     rout.forEach(element => {
         routesTab.push(element.name);
     })
@@ -32,7 +37,7 @@ export const useSessionStore = defineStore('session', () => {
         router.afterEach(() => {
             // Exécuter une fonction à chaque changement de page
 
-            if (useUserStore().isConnected) {
+            if (user.isConnected) {
                 if((isRouteOuverte(route)) || (isRouteAllowed(route) === false)) {
                     router.push('/');
                 } else {
@@ -46,6 +51,7 @@ export const useSessionStore = defineStore('session', () => {
                 }
             }
         })
+
         router.afterEach(async () => {
             await localStorage.clear();
         })
