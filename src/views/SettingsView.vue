@@ -3,6 +3,7 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 
+
 const axios = inject('axios');
 const token = useTokenStore();
 let state = reactive({
@@ -41,7 +42,8 @@ async function getDeviceInformation() {
 
 </script>
 <template>
-    <h1>Réglages de base</h1>
+
+  <h1>Réglages de base</h1>
     <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
     <h2>Données du dispositif d'affichage : <span>{{ state.NameDevice }}</span></h2>
     <h3>Identifiant du dispositif : <span>{{ state.DeviceId }}</span></h3>
@@ -65,5 +67,7 @@ async function getDeviceInformation() {
     </button>
 </template>
 <style scoped>
-
+html {
+  scroll-behavior: smooth;
+}
 </style>
