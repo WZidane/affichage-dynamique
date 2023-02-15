@@ -2,9 +2,12 @@
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
+import {useSessionStore} from "@/stores/sessions";
 
 const axios = inject('axios');
 const token = useTokenStore();
+const sessions = useSessionStore();
+
 let state = reactive({
     Device: {},
     Domain: {},
@@ -20,6 +23,7 @@ onMounted(() => {
     token.setDefaultToken();
      */
     getDeviceInformation();
+    sessions.setNav();
 })
 
 async function getDeviceInformation() {

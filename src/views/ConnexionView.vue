@@ -2,11 +2,14 @@
 import { inject, reactive } from 'vue'
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
+import {onMounted} from "@vue/runtime-core";
+import {useSessionStore} from "@/stores/sessions";
 
 const axios = inject('axios');
 const router = inject('router');
 const session = inject('session');
 const token = useTokenStore();
+const sessions = useSessionStore();
 
 let user = reactive({
   email: '',
@@ -20,6 +23,11 @@ let data = reactive({
   error: ""
 })
 
+onMounted(() => {
+  sessions.setNav();
+})
+
+
 function DisplayError() {
   data.error = "Adresse e-mail ou mot de passe incorrect !";
 }
@@ -32,6 +40,7 @@ async function validationFormulaire() {
   axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
     data.token = response.data.data.access_token;
+    token.state.USER = data.token;
   }).catch(() => {
       DisplayError();
   }).then(() => {
