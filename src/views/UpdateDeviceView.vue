@@ -3,13 +3,10 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import {useRouter} from "vue-router";
-import {useSessionStore} from "@/stores/sessions";
-
 
 const axios = inject('axios');
 const token = useTokenStore();
 const router = useRouter();
-const sessions = useSessionStore();
 
 let state = reactive({
   Device: {},

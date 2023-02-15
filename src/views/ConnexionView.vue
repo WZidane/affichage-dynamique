@@ -2,13 +2,11 @@
 import { inject, reactive } from 'vue'
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
-import {useSessionStore} from "@/stores/sessions";
 
 const axios = inject('axios');
 const router = inject('router');
 const session = inject('session');
 const token = useTokenStore();
-const sessions = useSessionStore();
 
 let user = reactive({
   email: '',
