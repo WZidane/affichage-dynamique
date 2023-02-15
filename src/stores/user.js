@@ -6,12 +6,18 @@ export const useUserStore = defineStore('user', () => {
     const router = useRouter();
     const isConnected = ref(false);
 
+    async function clear() {
+        await localStorage.clear();
+    }
+
     function setConnected() {
         isConnected.value = true;
     }
-    function disconnect() {
+    async function disconnect() {
         isConnected.value = false;
-        router.push('/se-connecter');
+        await router.push('/se-connecter').then(() => {
+            clear();
+        });
     }
 
 

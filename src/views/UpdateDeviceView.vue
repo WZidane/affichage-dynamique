@@ -4,7 +4,6 @@ import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import {useRouter} from "vue-router";
 
-
 const axios = inject('axios');
 const token = useTokenStore();
 const router = useRouter();
@@ -29,7 +28,6 @@ onMounted(() => {
     token.setDefaultToken();
    */
   // console.log(token.state.BASE)
-
   getDeviceInformation();
 })
 
