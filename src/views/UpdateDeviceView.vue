@@ -58,7 +58,6 @@ function update() {
 
 </script>
 <template>
-
     <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
     <!-- <h3>L'url : {{ token.state.BASE }}{{ token.state.OBJ }}</h3> -->
     <!--<h3>TOKEN du dispositif d'affichage :</h3>-->
