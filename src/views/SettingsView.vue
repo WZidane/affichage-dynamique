@@ -24,7 +24,6 @@ onMounted(() => {
     token.setDefaultToken();
      */
     getDeviceInformation();
-    sessions.setNav();
 })
 
 async function getDeviceInformation() {

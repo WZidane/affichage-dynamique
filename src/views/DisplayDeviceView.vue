@@ -59,7 +59,6 @@ let state = reactive({
 
 onMounted(() => {
   console.log('one device');
-  session.rmNav();
   getDeviceInformation();
 })
 function getAllEcransInOneData(tab){

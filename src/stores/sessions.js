@@ -3,15 +3,12 @@ import { useGlobal } from '@/mixins/global';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import {ref} from "vue";
 export const useSessionStore = defineStore('session', () => {
 
     const global = useGlobal();
     const route = useRoute();
     const router = useRouter();
     const user = useUserStore();
-
-    const navbar = ref(true);
 
     const routesOuvertes = ['se-connecter'];
 
@@ -35,13 +32,6 @@ export const useSessionStore = defineStore('session', () => {
         return routesTab.includes(route.name);
     }
 
-    function setNav() {
-        navbar.value = true;
-    }
-    function rmNav() {
-        navbar.value = false;
-    }
-
     async function isValid() {
         //console.log('IsValid ?');
         router.afterEach(() => {
@@ -61,13 +51,14 @@ export const useSessionStore = defineStore('session', () => {
                 }
             }
         })
+
+        router.afterEach(async () => {
+            await localStorage.clear();
+        })
     }
     return {
         isValid,
-        isRouteOuverte,
-        navbar,
-        setNav,
-        rmNav
+        isRouteOuverte
     }
 }, {
     persist: true,

@@ -2,7 +2,6 @@
 import { inject, reactive } from 'vue'
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
-import {onMounted} from "@vue/runtime-core";
 import {useSessionStore} from "@/stores/sessions";
 
 const axios = inject('axios');
@@ -22,11 +21,6 @@ let data = reactive({
   domaine: 0,
   error: ""
 })
-
-onMounted(() => {
-  sessions.setNav();
-})
-
 
 function DisplayError() {
   data.error = "Adresse e-mail ou mot de passe incorrect !";

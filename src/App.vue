@@ -41,9 +41,7 @@ function demarrer() {
 </script>
 
 <template>
-  <template v-if="session.navbar === true">
     <Navbar />
-  </template>
   <section class="section">
     <template v-if="state.appReady">
       <RouterView />

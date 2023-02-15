@@ -31,7 +31,6 @@ onMounted(() => {
     token.setDefaultToken();
    */
   // console.log(token.state.BASE)
-  sessions.setNav();
   getDeviceInformation();
 })
 
