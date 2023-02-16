@@ -29,7 +29,7 @@ onMounted(() => {
 })
 
 async function getDeviceInformation() {
-      await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}`).then(response => {
+      await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&access_token=${token.state.USER}`).then(response => {
             state.Device = response.data
             state.DeviceId = token.state.TOKEN
             state.Domain = state.Device.data.Domaine
