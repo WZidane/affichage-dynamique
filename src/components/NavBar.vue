@@ -17,7 +17,7 @@ const user = useUserStore();
         <img src="/logo-title.png" height="50" alt="logo">
       </router-link>
     </div>
-    <template v-if="user.isConnected">
+    <template v-if="user.isConnected && session.navbar === true">
       <div class="navbar-menu">
 
           <router-link to="/DisplayDevice" class="navbar-item">
@@ -31,6 +31,15 @@ const user = useUserStore();
           <button @click="user.disconnect()" class="button">
             Se déconnecter
           </button>
+
+      </div>
+    </template>
+    <template v-if="user.isConnected && session.navbar === false">
+      <div class="navbar-menu">
+
+        <button @click="user.disconnect()" class="button">
+          Se déconnecter
+        </button>
 
       </div>
     </template>

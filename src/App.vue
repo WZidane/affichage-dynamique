@@ -31,6 +31,8 @@ onMounted(() => {
   demarrer();
 });
 
+
+
 function demarrer() {
   if (session.isValid()) {
       state.appReady = true;

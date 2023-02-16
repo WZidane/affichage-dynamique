@@ -2,6 +2,7 @@
 import { inject, reactive } from 'vue'
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
+import {onMounted} from "@vue/runtime-core";
 
 const axios = inject('axios');
 const router = inject('router');
@@ -18,6 +19,10 @@ let data = reactive({
   token: "",
   domaine: 0,
   error: ""
+})
+
+onMounted(() => {
+  session.setNav();
 })
 
 function DisplayError() {
