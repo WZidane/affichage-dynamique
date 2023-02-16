@@ -10,6 +10,7 @@ export const useSessionStore = defineStore('session', () => {
     const route = useRoute();
     const router = useRouter();
     const user = useUserStore();
+
     const navbar = ref(false);
     const exist = ref(null);
     const section = reactive({
@@ -31,7 +32,7 @@ export const useSessionStore = defineStore('session', () => {
     function unsetNav() {
         navbar.value = false;
     }
-
+    
     const routesOuvertes = ['se-connecter'];
 
     const rout = router.options.routes;

@@ -21,6 +21,7 @@ let data = reactive({
   error: ""
 })
 
+
 onMounted(() => {
   session.setNav();
 })
@@ -85,6 +86,7 @@ async function recupDomain() {
           <button class="is-primary">Connexion</button>
         </div>
       </div>
+
       <p v-if="data.error !== ''">
           {{ data.error }}
       </p>

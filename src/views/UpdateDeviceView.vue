@@ -31,6 +31,7 @@ onMounted(() => {
     token.setDefaultToken();
    */
   // console.log(token.state.BASE)
+
   if(session.exist === null) {
     session.unsetNav();
   } else {
