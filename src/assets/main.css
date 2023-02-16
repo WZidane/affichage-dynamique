@@ -104,6 +104,12 @@ h1{
 }
 
 .arrow{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
   position: absolute;
   right: 6px;
   top: 69px;
@@ -112,14 +118,22 @@ h1{
   border-radius: 0 0 50% 50%;
   box-shadow: 0 3px 3px;
   transition: all ease-in-out 0.3s;
-  opacity: 0;
 }
-.arrow:hover{ /* doit être en onCLick au lieu de hover */
+.arrow-key { /* doit être en onCLick au lieu de hover */
   rotate: 180deg;
   border-radius: 50% 50% 0 0;
   box-shadow: 0 -3px 3px;
 }
-
+.navbar-presence {
+  position: relative;
+  top: 0;
+  z-index: -1;
+}
+.navbar-absence {
+  position: relative;
+  top: -70px;
+  z-index: -1;
+}
 .section {
   display: flex;
   place-items: center;

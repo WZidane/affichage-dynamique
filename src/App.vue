@@ -8,7 +8,6 @@ import {useSessionStore} from "@/stores/sessions";
 import { useGlobal } from '@/mixins/global';
 import mitt from 'mitt';
 
-
 const state = reactive({ appReady: false});
 
 const bus = mitt();
@@ -44,7 +43,14 @@ function demarrer() {
 
 <template>
     <Navbar />
-  <section class="section">
+  <template v-if="$route.path === '/DisplayDevice'">
+    <section :class="session.section.class">
+      <template v-if="state.appReady">
+        <RouterView />
+      </template>
+    </section>
+  </template>
+  <section v-if="$route.path !== '/DisplayDevice'" class="section">
     <template v-if="state.appReady">
       <RouterView />
     </template>

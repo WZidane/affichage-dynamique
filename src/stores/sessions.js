@@ -3,7 +3,7 @@ import { useGlobal } from '@/mixins/global';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 export const useSessionStore = defineStore('session', () => {
 
     const global = useGlobal();
@@ -12,6 +12,9 @@ export const useSessionStore = defineStore('session', () => {
     const user = useUserStore();
     const navbar = ref(false);
     const exist = ref(null);
+    const section = reactive({
+        class: 'section navbar-absence'
+    })
 
     function setExist() {
         exist.value = true;
@@ -83,7 +86,8 @@ export const useSessionStore = defineStore('session', () => {
         setExist,
         unsetExist,
         setNav,
-        unsetNav
+        unsetNav,
+        section
     }
 }, {
     persist: true,
