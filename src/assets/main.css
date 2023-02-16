@@ -119,6 +119,9 @@ h1{
   box-shadow: 0 3px 3px;
   transition: all ease-in-out 0.3s;
 }
+.arrow:hover {
+  opacity: 1;
+}
 .arrow-key { /* doit être en onCLick au lieu de hover */
   rotate: 180deg;
   border-radius: 50% 50% 0 0;
