@@ -16,10 +16,10 @@ let user = reactive({
 
 let data = reactive({
   status: "",
-  token: "",
   domaine: 0,
   error: ""
 })
+
 
 onMounted(() => {
   session.setNav();
@@ -36,15 +36,14 @@ function DisplaySuccess() {
 async function validationFormulaire() {
   axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
-    data.token = response.data.data.access_token;
-    token.state.USER = data.token;
+    token.state.USER = response.data.data.access_token;
+
   }).catch(() => {
       DisplayError();
   }).then(() => {
     if(data.status === "OK") {
       DisplaySuccess();
       useUserStore().setConnected();
-      //console.log(useUserStore().isConnected);
       recupDomain();
     }
   })
@@ -52,7 +51,7 @@ async function validationFormulaire() {
 }
 
 async function recupDomain() {
-  await axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${data.token}&fields=Domaine`).then((response) => {
+  await axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${token.state.USER}&fields=Domaine`).then((response) => {
       data.domaine = response.data;
 
       token.setDomain(data.domaine.data.Domaine);
@@ -85,6 +84,7 @@ async function recupDomain() {
           <button class="is-primary">Connexion</button>
         </div>
       </div>
+
       <p v-if="data.error !== ''">
           {{ data.error }}
       </p>
