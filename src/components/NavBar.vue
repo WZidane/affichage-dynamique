@@ -33,8 +33,19 @@ const user = useUserStore();
           </button>
 
       </div>
+      <span class="arrow">▼</span>
     </template>
   </nav>
 </template>
 
+<style scoped>
+/* afficher ce CSS lorsqu'on est sur DisplayDeviceView */
+.navbar{
+  position: relative;
+  top: -72px;
+}
+.arrow{
+  opacity: 1;
+}
+</style>
 
