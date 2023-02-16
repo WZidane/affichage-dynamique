@@ -170,13 +170,14 @@ function getDeviceInformation() {
     buildingDataToDisplay(state.SequenceEcrans);
     setInterval(() => {
           state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
+      if ((state.styleData[state.dataIndex]) !==undefined){
      addingStyleToH1();
       addingStyleToH2()
       addingStyleToH3()
       addingStyleToP()
       addingStyleToLink()
       addingStyleToImg()
-        }, 3000
+        }}, 3000
     );
   })
 }
