@@ -59,6 +59,7 @@ let state = reactive({
 
 onMounted(() => {
   console.log('one device');
+  session.setNav();
   getDeviceInformation();
 })
 function getAllEcransInOneData(tab){
@@ -227,4 +228,5 @@ function getDeviceInformation() {
   border-radius: v-bind('img.border_radius');
   width: v-bind('img.width');
 }
+
 </style>
