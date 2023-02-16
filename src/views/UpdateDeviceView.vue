@@ -19,7 +19,8 @@ let state = reactive({
   NameDevice: "",
   Devices: [],
   otherDevices:[],
-  NameDomain: ""
+  NameDomain: "",
+  error: ''
 });
 
 
@@ -55,9 +56,18 @@ function updateToken(event) {
   console.log(token.state.TOKEN);
 }
 
+function displayError() {
+  state.error = 'Dispositif Invalide !';
+}
+
 function update() {
   session.setExist();
-  router.push('/');
+
+  if(token.state.TOKEN === null || token.state.TOKEN === undefined || token.state.TOKEN === '') {
+    displayError();
+  } else {
+    router.push('/');
+  }
 }
 
 </script>
@@ -68,12 +78,15 @@ function update() {
 
     <form id="formulaireNewToken" @change="updateToken" @submit.prevent="update">
       <select id="NewTOKEN" :v-model="token.state.TOKEN" name="NewTOKEN">
-        <option value="">-- Veuillez choisir un token --</option>
+        <option value="">-- Veuillez choisir un dispositif --</option>
         <option v-for="token in state.allDevices" :key="token.id" :value="token.id">{{ token.Nom_Dispositif }}</option>
       </select>
-      <button class="is-primary">Valider le token</button>
+      <button class="is-primary">Valider !</button>
+      <p v-if="state.error !== ''">{{ state.error }}</p>
     </form>
 </template>
 <style scoped>
-
+p {
+  text-align: center;
+}
 </style>

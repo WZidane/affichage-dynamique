@@ -85,7 +85,7 @@ async function recupDomain() {
           <button class="is-primary">Connexion</button>
         </div>
       </div>
-      <p>
+      <p v-if="data.error !== ''">
           {{ data.error }}
       </p>
     </form>
