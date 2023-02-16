@@ -3,8 +3,10 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import { marked } from 'marked';
+import {useSessionStore} from "@/stores/sessions";
 
 const token = useTokenStore();
+const session = useSessionStore();
 const axios = inject('axios');
 
 const h1 = reactive(({
@@ -57,6 +59,7 @@ let state = reactive({
 
 onMounted(() => {
   console.log('one device');
+  session.setNav();
   getDeviceInformation();
 })
 function getAllEcransInOneData(tab){
@@ -159,14 +162,16 @@ function addingStyleToImg(){
 
 }
 function getDeviceInformation() {
-  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*`).then(response => {
+  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*&access_token=${token.state.USER}`).then(response => {
     state.Device = response.data
     console.log(state.Device)
     state.sequences = state.Device.data.Sequences;
     orderingSequence(state.sequences);
 
    let SequenceEcrans = getAllEcransInOneData(state.sequences);
+   console.log(SequenceEcrans)
     orderingEcrans(SequenceEcrans);
+   console.log(state.SequenceEcrans)
     buildingDataToDisplay(state.SequenceEcrans);
     setInterval(() => {
           state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
@@ -225,4 +230,5 @@ function getDeviceInformation() {
   border-radius: v-bind('img.border_radius');
   width: v-bind('img.width');
 }
+
 </style>

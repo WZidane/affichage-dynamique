@@ -3,9 +3,13 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 
+import {useSessionStore} from "@/stores/sessions";
 
 const axios = inject('axios');
 const token = useTokenStore();
+const session = useSessionStore();
+
+
 let state = reactive({
     Device: {},
     Domain: {},
@@ -20,11 +24,12 @@ onMounted(() => {
     token.setDeviceObj();
     token.setDefaultToken();
      */
+    session.setNav();
     getDeviceInformation();
 })
 
 async function getDeviceInformation() {
-      await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}`).then(response => {
+      await axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Nom_Dispositif,Sequences.Sequence_id.Nom_Sequence,Ecrans.Ecran_id.Nom_Ecran,Domaine.Nom_Domaine&filter[Domaine][_eq]=${token.state.DOMAIN}&access_token=${token.state.USER}`).then(response => {
             state.Device = response.data
             state.DeviceId = token.state.TOKEN
             state.Domain = state.Device.data.Domaine
@@ -43,7 +48,7 @@ async function getDeviceInformation() {
 </script>
 <template>
 
-  <h1>Réglages de base</h1>
+  <h1>Paramètres</h1>
     <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
     <h2>Données du dispositif d'affichage : <span>{{ state.NameDevice }}</span></h2>
     <h3>Identifiant du dispositif : <span>{{ state.DeviceId }}</span></h3>

@@ -3,14 +3,42 @@ import { useGlobal } from '@/mixins/global';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import {reactive, ref} from "vue";
 export const useSessionStore = defineStore('session', () => {
 
     const global = useGlobal();
     const route = useRoute();
     const router = useRouter();
+    const user = useUserStore();
+
+    const navbar = ref(false);
+    const exist = ref(null);
+    const section = reactive({
+        class: 'section navbar-absence'
+    })
+
+    function setExist() {
+        exist.value = true;
+    }
+
+    function unsetExist() {
+        exist.value = false;
+    }
+
+    function setNav() {
+        navbar.value = true;
+    }
+
+    function unsetNav() {
+        navbar.value = false;
+    }
+    
     const routesOuvertes = ['se-connecter'];
+
     const rout = router.options.routes;
+
     const routesTab = [];
+
     rout.forEach(element => {
         routesTab.push(element.name);
     })
@@ -32,7 +60,7 @@ export const useSessionStore = defineStore('session', () => {
         router.afterEach(() => {
             // Exécuter une fonction à chaque changement de page
 
-            if (useUserStore().isConnected) {
+            if (user.isConnected) {
                 if((isRouteOuverte(route)) || (isRouteAllowed(route) === false)) {
                     router.push('/');
                 } else {
@@ -46,13 +74,17 @@ export const useSessionStore = defineStore('session', () => {
                 }
             }
         })
-        router.afterEach(async () => {
-            await localStorage.clear();
-        })
     }
     return {
         isValid,
-        isRouteOuverte
+        isRouteOuverte,
+        navbar,
+        exist,
+        setExist,
+        unsetExist,
+        setNav,
+        unsetNav,
+        section
     }
 }, {
     persist: true,
