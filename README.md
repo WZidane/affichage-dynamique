@@ -1,29 +1,32 @@
-# Affichage Dynamique
+# Affichage Dynamique (projet tutoré)
 
-This template should help get you started developing with Vue 3 in Vite.
+## JOMAA Akrem, POIROT Damien, SIX Léo, ZIDANE Waïl
+### Étudiants en LP CIASIE
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Présentation 
 
-## Customize configuration
+Notre projet est composé de deux applications. La première est la version en ligne de **Directus** qui est un CMS headless open source en nodeJS. C'est-à-dire que c’est un système de contenus qui nous offre une administration pour gérer un ensemble d’écrans d’informations installés au sein d’une organisation (par exemple, un établissement universitaire) sur différents dispositifs d’affichage. Ce CMS possède une API afin de pouvoir mieux exploiter les données de différentes manières.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+La deuxième application web est l'**Affichage Dynamique**. C'est un gestionnaire d'affichage qui a été développée en Vue.js et fonctionne avec Directus en utilisant des requêtes API. Ce gestionnaire est accessible sur les dispositifs d'affichage connectés au réseau et permet de paraméter et d'afficher différents contenus sur les écrans qui ont été préalablement créé sur Directus.
 
-## Project Setup
+## Récupérer et initialiser le projet 
 
-```sh
-npm install
+*Ce repository contient uniquement le code de l'appli Affichage Dynamique et pas celui de Directus*
+
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
+git clone git@github.com:WZidane/affichage-dynamique.git
+cd affichage-dynamique
+npm install
 npm run dev
 ```
 
-### Compile and Minify for Production
+## Accéder aux liens 
 
-```sh
-npm run build
-```
+Lien du CMS regroupant toutes les informations de conception (maquettes, UML, ...) : https://wailzidane.fr/affichage-dynamique/ 
+
+Lien du gestionnaire d'administration Directus : https://74b3jzk3.directus.app/admin/ 
+
+Lien du gestionnaire d'affichage sur webetu (*accès restreint aux étudiants et personnels de l'IUT*) : 
+[---bientôt disponible---](https://github.com/WZidane/affichage-dynamique)

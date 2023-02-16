@@ -16,17 +16,28 @@ let user = reactive({
 let data = reactive({
   status: "",
   token: "",
-  domaine: 0
+  domaine: 0,
+  error: ""
 })
+
+function DisplayError() {
+  data.error = "Adresse e-mail ou mot de passe incorrect !";
+}
+
+function DisplaySuccess() {
+  data.error = "";
+}
 
 async function validationFormulaire() {
   axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
     data.token = response.data.data.access_token;
+    token.state.USER = data.token;
   }).catch(() => {
-      alert("Adresse e-mail ou mot de passe incorrect !");
+      DisplayError();
   }).then(() => {
     if(data.status === "OK") {
+      DisplaySuccess();
       useUserStore().setConnected();
       //console.log(useUserStore().isConnected);
       recupDomain();
@@ -42,7 +53,6 @@ async function recupDomain() {
       token.setDomain(data.domaine.data.Domaine);
   }).then(() => {
     router.push('/UpdateDevice');
-
   });
 }
 </script>
@@ -62,7 +72,7 @@ async function recupDomain() {
 
       <div class="field">
         <label class="label">Mot de passe</label>
-        <input class="input" v-model="user.password" type="password" placeholder="Your password">
+        <input class="input" v-model="user.password" type="password" placeholder="Votre mot de passe">
       </div>
 
       <div class="field is-grouped">
@@ -70,6 +80,9 @@ async function recupDomain() {
           <button class="is-primary">Connexion</button>
         </div>
       </div>
+      <p>
+          {{ data.error }}
+      </p>
     </form>
 
   </div>
