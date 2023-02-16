@@ -230,4 +230,5 @@ function getDeviceInformation() {
   border-radius: v-bind('img.border_radius');
   width: v-bind('img.width');
 }
+
 </style>

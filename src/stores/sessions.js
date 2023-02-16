@@ -3,6 +3,7 @@ import { useGlobal } from '@/mixins/global';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import {reactive, ref} from "vue";
 export const useSessionStore = defineStore('session', () => {
 
     const global = useGlobal();
@@ -10,6 +11,28 @@ export const useSessionStore = defineStore('session', () => {
     const router = useRouter();
     const user = useUserStore();
 
+    const navbar = ref(false);
+    const exist = ref(null);
+    const section = reactive({
+        class: 'section navbar-absence'
+    })
+
+    function setExist() {
+        exist.value = true;
+    }
+
+    function unsetExist() {
+        exist.value = false;
+    }
+
+    function setNav() {
+        navbar.value = true;
+    }
+
+    function unsetNav() {
+        navbar.value = false;
+    }
+    
     const routesOuvertes = ['se-connecter'];
 
     const rout = router.options.routes;
@@ -58,7 +81,14 @@ export const useSessionStore = defineStore('session', () => {
     }
     return {
         isValid,
-        isRouteOuverte
+        isRouteOuverte,
+        navbar,
+        exist,
+        setExist,
+        unsetExist,
+        setNav,
+        unsetNav,
+        section
     }
 }, {
     persist: true,

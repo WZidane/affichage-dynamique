@@ -3,10 +3,12 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import {useRouter} from "vue-router";
+import {useSessionStore} from "@/stores/sessions";
 
 const axios = inject('axios');
 const token = useTokenStore();
 const router = useRouter();
+const session = useSessionStore();
 
 let state = reactive({
   Device: {},
@@ -17,7 +19,8 @@ let state = reactive({
   NameDevice: "",
   Devices: [],
   otherDevices:[],
-  NameDomain: ""
+  NameDomain: "",
+  error: ''
 });
 
 
@@ -28,6 +31,12 @@ onMounted(() => {
     token.setDefaultToken();
    */
   // console.log(token.state.BASE)
+
+  if(session.exist === null) {
+    session.unsetNav();
+  } else {
+    session.setNav();
+  }
   getDeviceInformation();
 })
 
@@ -48,8 +57,18 @@ function updateToken(event) {
   console.log(token.state.TOKEN);
 }
 
+function displayError() {
+  state.error = 'Dispositif Invalide !';
+}
+
 function update() {
-  router.push('/');
+  session.setExist();
+
+  if(token.state.TOKEN === null || token.state.TOKEN === undefined || token.state.TOKEN === '') {
+    displayError();
+  } else {
+    router.push('/');
+  }
 }
 
 </script>
@@ -60,12 +79,15 @@ function update() {
 
     <form id="formulaireNewToken" @change="updateToken" @submit.prevent="update">
       <select id="NewTOKEN" :v-model="token.state.TOKEN" name="NewTOKEN">
-        <option value="">-- Veuillez choisir un token --</option>
+        <option value="">-- Veuillez choisir un dispositif --</option>
         <option v-for="token in state.allDevices" :key="token.id" :value="token.id">{{ token.Nom_Dispositif }}</option>
       </select>
-      <button class="is-primary">Valider le token</button>
+      <button class="is-primary">Valider !</button>
+      <p v-if="state.error !== ''">{{ state.error }}</p>
     </form>
 </template>
 <style scoped>
-
+p {
+  text-align: center;
+}
 </style>

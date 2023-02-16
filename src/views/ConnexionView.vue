@@ -2,6 +2,7 @@
 import { inject, reactive } from 'vue'
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
+import {onMounted} from "@vue/runtime-core";
 
 const axios = inject('axios');
 const router = inject('router');
@@ -18,6 +19,11 @@ let data = reactive({
   token: "",
   domaine: 0,
   error: ""
+})
+
+
+onMounted(() => {
+  session.setNav();
 })
 
 function DisplayError() {
@@ -80,7 +86,8 @@ async function recupDomain() {
           <button class="is-primary">Connexion</button>
         </div>
       </div>
-      <p>
+
+      <p v-if="data.error !== ''">
           {{ data.error }}
       </p>
     </form>
