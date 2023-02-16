@@ -33,6 +33,7 @@ const user = useUserStore();
           </button>
 
       </div>
+      <span class="arrow">▼</span>
     </template>
     <template v-if="user.isConnected && session.navbar === false">
       <div class="navbar-menu">
@@ -46,4 +47,14 @@ const user = useUserStore();
   </nav>
 </template>
 
+<style scoped>
+/* afficher ce CSS lorsqu'on est sur DisplayDeviceView */
+.navbar{
+  position: relative;
+  top: -72px;
+}
+.arrow{
+  opacity: 1;
+}
+</style>
 
