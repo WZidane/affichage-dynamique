@@ -99,7 +99,8 @@ function arrow() {
   top: -72px;
 }
 .arrow-pos {
-  opacity: 1;
+  opacity: 0.1;
+  transition: all 0.5s ease-in-out;
 }
 </style>
 
