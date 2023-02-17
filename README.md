@@ -28,5 +28,5 @@ Lien du CMS regroupant toutes les informations de conception (maquettes, UML, ..
 
 Lien du gestionnaire d'administration Directus : https://74b3jzk3.directus.app/admin/ 
 
-Lien du gestionnaire d'affichage sur webetu (*accès restreint aux étudiants et personnels de l'IUT*) : 
-[---bientôt disponible---](https://github.com/WZidane/affichage-dynamique)
+Lien du gestionnaire d'affichage sur webetu (*accès restreint aux étudiants et personnels de l'IUT*) :
+https://affichage-dynamique.netlify.app/
