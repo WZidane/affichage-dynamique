@@ -2,9 +2,10 @@
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
-import { marked } from 'marked';
+import {marked, use} from 'marked';
 import {useSessionStore} from "@/stores/sessions";
-
+import {useUserStore} from "@/stores/user";
+const user = useUserStore();
 const token = useTokenStore();
 const session = useSessionStore();
 const axios = inject('axios');
@@ -103,66 +104,59 @@ function buildingDataToDisplay(tab){
 
 
 function addingStyleToH1(){
-  if (((state.styleData)[state.dataIndex].h1)!==null){
   h1.color = (state.styleData)[state.dataIndex].h1.color;
   h1.background_color = (state.styleData)[state.dataIndex].h1.background_color
   h1.font_size = (state.styleData)[state.dataIndex].h1.font_size
   h1.font_weight = (state.styleData)[state.dataIndex].h1.font_weight
   h1.text_align = (state.styleData)[state.dataIndex].h1.text_align
   h1.text_transform = (state.styleData)[state.dataIndex].h1.text_transform
-  }
+
 }
 
 function addingStyleToH2(){
-  if (((state.styleData)[state.dataIndex].h2)!==null){
     h2.color = (state.styleData)[state.dataIndex].h2.color;
     h2.background_color = (state.styleData)[state.dataIndex].h2.background_color
     h2.font_size = (state.styleData)[state.dataIndex].h2.font_size
     h2.font_weight = (state.styleData)[state.dataIndex].h2.font_weight
     h2.text_align = (state.styleData)[state.dataIndex].h2.text_align
     h2.text_transform = (state.styleData)[state.dataIndex].h2.text_transform
-  }
 
 }
 
 function addingStyleToH3(){
-  if (((state.styleData)[state.dataIndex].h3)!==null){
   h3.color = (state.styleData)[state.dataIndex].h3.color;
   h3.background_color = (state.styleData)[state.dataIndex].h3.background_color
   h3.font_size = (state.styleData)[state.dataIndex].h3.font_size
   h3.font_weight = (state.styleData)[state.dataIndex].h3.font_weight
   h3.text_align = (state.styleData)[state.dataIndex].h3.text_align
   h3.text_transform = (state.styleData)[state.dataIndex].h3.text_transform
-  }
 }
 
 function addingStyleToP(){
-  if (((state.styleData)[state.dataIndex].p)!==null){
     p.color = (state.styleData)[state.dataIndex].p.color;
     p.background_color = (state.styleData)[state.dataIndex].p.background_color
     p.font_size = (state.styleData)[state.dataIndex].p.font_size
     p.text_align = (state.styleData)[state.dataIndex].p.text_align
     p.text_transform = (state.styleData)[state.dataIndex].p.text_transform
-  }
-
 }
-
-function addingStyleToLink(){
-  if (((state.styleData)[state.dataIndex].a)!==null){
-    a.color = (state.styleData)[state.dataIndex].a.color;
-    a.text_decoration = (state.styleData)[state.dataIndex].a.text_decoration
-  }
-}
-
 function addingStyleToImg(){
-  if (((state.styleData)[state.dataIndex].img)!==null){
     img.border_radius = (state.styleData)[state.dataIndex].img.border_radius;
     img.width = (state.styleData)[state.dataIndex].img.width
-  }
-
 }
 function getDeviceInformation() {
-  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*&access_token=${token.state.USER}`).then(response => {
+  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*&access_token=${token.state.USER}`).catch((response)=>{
+    if ((response.response.data.errors[0].extensions.code === 'TOKEN_EXPIRED')){
+      axios.post(`https://74b3jzk3.directus.app/auth/refresh`,{ refresh_token : token.state.REFRESHUSER, mode : 'json' }).then(response => {
+        token.state.USER = response.data.data.access_token;
+        console.log(token.state.USER)
+
+        token.state.REFRESHUSER =response.data.data.refresh_token;
+      })
+
+    }
+
+  }).then(response => {
+
     state.Device = response.data
     console.log(state.Device)
     state.sequences = state.Device.data.Sequences;
@@ -173,22 +167,44 @@ function getDeviceInformation() {
     orderingEcrans(SequenceEcrans);
    console.log(state.SequenceEcrans)
     buildingDataToDisplay(state.SequenceEcrans);
-    setInterval(() => {
-          state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
-     addingStyleToH1();
+   console.log(state.styleData)
+    state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g,
+        "")
+    console.log(state.htmlData[state.dataIndex])
+
+    if (state.styleData.length !== 0){
+      addingStyleToH1();
       addingStyleToH2()
       addingStyleToH3()
       addingStyleToP()
-      addingStyleToLink()
       addingStyleToImg()
-        }, 3000
+    }
+  }).then(()=>{
+     setInterval(() => {
+
+
+       state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
+       state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g,
+           "")
+       console.log(state.htmlData[state.dataIndex])
+
+       if (state.styleData.length !== 0){
+            addingStyleToH1();
+            addingStyleToH2()
+            addingStyleToH3()
+            addingStyleToP()
+            addingStyleToImg()
+          }
+
+        }, 100000
     );
   })
 }
 </script>
 <template>
-  <div class="content" v-html="state.htmlData[state.dataIndex]">
+  <div class="content" v-if="state.sequences.length" v-html="state.htmlData[state.dataIndex]">
   </div>
+  <div v-else><h2>Il n'existe pas de séquences liées à ce dispositif !</h2> </div>
 </template>
 <style scoped>
 .content :deep(h1){
@@ -222,13 +238,9 @@ function getDeviceInformation() {
   text-transform: v-bind('p.text_transform');
   text-align: v-bind('p.text_align');
 }
-.content :deep(a){
-  color: v-bind('a.color');
-  text-decoration: v-bind('a.text_decoration');
-}
+
 .content :deep(img){
   border-radius: v-bind('img.border_radius');
   width: v-bind('img.width');
 }
-
 </style>

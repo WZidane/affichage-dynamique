@@ -42,7 +42,18 @@ onMounted(() => {
 
 async function getDeviceInformation() {
 
-  await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=id,Nom_Dispositif,Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Domaine.Nom_Domaine,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree&filter[Domaine][_eq]=${token.state.DOMAIN}&access_token=${token.state.USER}`).then(response => {
+  await axios.get(`${token.state.BASE}${token.state.OBJ}?fields=id,Nom_Dispositif,Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Domaine.Nom_Domaine,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree&filter[Domaine][_eq]=${token.state.DOMAIN}&access_token=${token.state.USER}`).catch((response)=>{
+    if ((response.response.data.errors[0].extensions.code === 'TOKEN_EXPIRED')){
+      axios.post(`https://74b3jzk3.directus.app/auth/refresh`,{ refresh_token : token.state.REFRESHUSER, mode : 'json' }).then(response => {
+        token.state.USER = response.data.data.access_token;
+        console.log(token.state.USER)
+
+        token.state.REFRESHUSER =response.data.data.refresh_token;
+      })
+
+    }
+
+  }).then(response => {
     state.Device = response.data ;
     state.allDevices = state.Device.data
     state.Domain = state.Device.data[0].Domaine;
