@@ -1,15 +1,15 @@
 <script setup>
 
-import Navbar from '@/components/Navbar.vue';
-import { computed, provide, onMounted, reactive, watch } from 'vue';
+import Navbar from '@/components/NavBar.vue';
+import { provide, onMounted, reactive, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import {useSessionStore} from "@/stores/sessions";
-
 import { useGlobal } from '@/mixins/global';
 import mitt from 'mitt';
-
+import {useTokenStore} from "@/stores/token";
 
 const state = reactive({ appReady: false});
+const token = useTokenStore();
 
 const bus = mitt();
 provide('bus', bus);
@@ -23,8 +23,6 @@ provide('session', session);
 
 const route = useRoute();
 
-const afficherNav = computed(() => !session.isRouteOuverte(route));
-
 watch(route, () => {
   demarrer();
 });
@@ -32,6 +30,8 @@ watch(route, () => {
 onMounted(() => {
   demarrer();
 });
+
+
 
 function demarrer() {
   if (session.isValid()) {
@@ -44,7 +44,14 @@ function demarrer() {
 
 <template>
     <Navbar />
-  <section class="section">
+  <template v-if="$route.path === '/DisplayDevice'">
+    <section :class="session.section.class">
+      <template v-if="state.appReady">
+        <RouterView />
+      </template>
+    </section>
+  </template>
+  <section v-if="$route.path !== '/DisplayDevice'" class="section">
     <template v-if="state.appReady">
       <RouterView />
     </template>

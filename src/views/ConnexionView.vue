@@ -2,6 +2,7 @@
 import { inject, reactive } from 'vue'
 import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
+import {onMounted} from "@vue/runtime-core";
 
 const axios = inject('axios');
 const router = inject('router');
@@ -15,31 +16,50 @@ let user = reactive({
 
 let data = reactive({
   status: "",
-  token: "",
-  domaine: 0
+  domaine: 0,
+  error: ""
 })
+
+
+onMounted(() => {
+  session.setNav();
+
+})
+
+function DisplayError() {
+  data.error = "Adresse e-mail ou mot de passe incorrect !";
+}
+
+function DisplaySuccess() {
+  data.error = "";
+}
 
 async function validationFormulaire() {
   axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
-    data.token = response.data.data.access_token;
+    token.state.USER = response.data.data.access_token;
+    console.log(response.data.data.refresh_token)
+    token.state.REFRESHUSER = response.data.data.refresh_token;
+
   }).catch(() => {
-      alert("Adresse e-mail ou mot de passe incorrect !");
+      DisplayError();
   }).then(() => {
     if(data.status === "OK") {
+      DisplaySuccess();
       useUserStore().setConnected();
-      console.log(useUserStore().isConnected);
       recupDomain();
-      router.push('/');
     }
   })
 
 }
 
-function recupDomain() {
-  axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${data.token}&fields=Domaine`).then((response) => {
+async function recupDomain() {
+  await axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${token.state.USER}&fields=Domaine`).then((response) => {
       data.domaine = response.data;
-      token.state.DOMAIN = data.domaine.data.Domaine;
+
+      token.setDomain(data.domaine.data.Domaine);
+  }).then(() => {
+    router.push('/UpdateDevice');
   });
 }
 </script>
@@ -59,7 +79,7 @@ function recupDomain() {
 
       <div class="field">
         <label class="label">Mot de passe</label>
-        <input class="input" v-model="user.password" type="password" placeholder="Your password">
+        <input class="input" v-model="user.password" type="password" placeholder="Votre mot de passe">
       </div>
 
       <div class="field is-grouped">
@@ -67,6 +87,10 @@ function recupDomain() {
           <button class="is-primary">Connexion</button>
         </div>
       </div>
+
+      <p v-if="data.error !== ''">
+          {{ data.error }}
+      </p>
     </form>
 
   </div>
@@ -74,5 +98,7 @@ function recupDomain() {
 </template>
 
 <style scoped>
-
+html {
+  scroll-behavior: smooth;
+}
 </style>

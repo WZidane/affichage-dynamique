@@ -3,12 +3,45 @@ import { useGlobal } from '@/mixins/global';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import {reactive, ref} from "vue";
 export const useSessionStore = defineStore('session', () => {
 
     const global = useGlobal();
     const route = useRoute();
     const router = useRouter();
+    const user = useUserStore();
+
+    const navbar = ref(false);
+    const exist = ref(null);
+    const section = reactive({
+        class: 'section navbar-absence'
+    })
+
+    function setExist() {
+        exist.value = true;
+    }
+
+    function unsetExist() {
+        exist.value = false;
+    }
+
+    function setNav() {
+        navbar.value = true;
+    }
+
+    function unsetNav() {
+        navbar.value = false;
+    }
+    
     const routesOuvertes = ['se-connecter'];
+
+    const rout = router.options.routes;
+
+    const routesTab = [];
+
+    rout.forEach(element => {
+        routesTab.push(element.name);
+    })
 
     /**
      * La route courante est "ouverte"
@@ -18,28 +51,40 @@ export const useSessionStore = defineStore('session', () => {
         return routesOuvertes.includes(route.name);
     }
 
-    async function isValid() {
-        console.log('IsValid ?');
-
-        if (useUserStore().isConnected) {
-            if(isRouteOuverte(route)) {
-                router.push('/');
-            } else {
-                return true;
-            }
-        } else {
-            if (isRouteOuverte(route)) {
-                return true;
-            } else {
-                global.seConnecter();
-            }
-        }
+    function isRouteAllowed(route) {
+        return routesTab.includes(route.name);
     }
 
+    async function isValid() {
+        //console.log('IsValid ?');
+        router.afterEach(() => {
+            // Exécuter une fonction à chaque changement de page
 
+            if (user.isConnected) {
+                if((isRouteOuverte(route)) || (isRouteAllowed(route) === false)) {
+                    router.push('/');
+                } else {
+                    return true;
+                }
+            } else {
+                if (isRouteOuverte(route)) {
+                    return true;
+                } else {
+                    global.seConnecter();
+                }
+            }
+        })
+    }
     return {
         isValid,
-        isRouteOuverte
+        isRouteOuverte,
+        navbar,
+        exist,
+        setExist,
+        unsetExist,
+        setNav,
+        unsetNav,
+        section
     }
 }, {
     persist: true,

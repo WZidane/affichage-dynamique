@@ -2,155 +2,245 @@
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
-import { marked } from 'marked';
-import { nextTick } from 'vue'
-
+import {marked, use} from 'marked';
+import {useSessionStore} from "@/stores/sessions";
+import {useUserStore} from "@/stores/user";
+const user = useUserStore();
 const token = useTokenStore();
+const session = useSessionStore();
 const axios = inject('axios');
+
+const h1 = reactive(({
+  color : '',
+  font_size: '',
+  background_color:'',
+  text_transform:'',
+  text_align:'',
+  font_weight:''
+}))
+const h2 = reactive(({
+  color : '',
+  font_size: '',
+  background_color:'',
+  text_transform:'',
+  text_align:'',
+  font_weight:''
+}))
+const h3 = reactive(({
+  color : '',
+  font_size: '',
+  background_color:'',
+  text_transform:'',
+  text_align:'',
+  font_weight:''
+}))
+const p = reactive(({
+  color : '',
+  font_size: '',
+  background_color:'',
+  text_transform:'',
+  text_align:'',
+}))
+const a = reactive(({
+  color : '',
+  text_decoration:''
+}))
+const img = reactive(({
+ border_radius:'',
+  width:''
+}))
 let state = reactive({
   Device: {},
   sequences: [],
-  ecrans: [],
-  visible: false,
+  SequenceEcrans : [],
   htmlData: [],
-  Durees: [],
-  newDevice: {},
-  asba: {},
-  i: 0,
-
+  styleData:[],
   dataIndex: 0,
-  timeIndex: 0
-
-
 });
-
-// (state.Durees).forEach(duree => {
-//     duree
-// })
-
 
 onMounted(() => {
   console.log('one device');
-  /*
-  token.setDefaultBasicUrl();
-  token.setDeviceObj();
-  token.setDefaultToken();
-   */
+  session.setNav();
   getDeviceInformation();
-  // start();
-  // setInterval(() => {
-  //     state.currentIndex = (state.currentIndex + 1) % state.htmlData.length
-  // }
-  //     , 9000);
-  // console.log(state.Durees)
-
 })
-// async function start() {
-//     // console.log(state.Durees)
-//     await setInterval(() => {
-//         state.currentIndex = (state.currentIndex + 1) % state.htmlData.length
-//     }
-//         , 9000);
-// }
-function minutesToSecondes(m) {
-  return (Math.trunc(m) * 60 + (1 / (m - Math.trunc(m)))) * 1000
+function getAllEcransInOneData(tab){
+  let permenantSequenceEcrans = [];
+  tab.forEach(sequence => {
+    permenantSequenceEcrans.push( sequence.Sequence_id.Ecrans) ;
+  })
+return  permenantSequenceEcrans;
 }
 
-function getDeviceInformation() {
-  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Ecrans.Ecran_id.Donnees,Ecrans.Ecran_id.Duree,Ecrans.id,Ecrans.Ordre_Dispositif_Ecran`).then(response => {
-    state.Device = response.data
-    console.log(state.Device)
-    state.ecrans = state.Device.data.Ecrans;
-    state.ecrans.sort((a, b) => {
-      return a.Ordre_Dispositif_Ecran - b.Ordre_Dispositif_Ecran
-    })
+function orderingEcrans(tab){
+  let oneTabSequenceEcrans = [];
+  oneTabSequenceEcrans = tab.reduce((acc,current)=> acc.concat(current),[]);
+  let seen = new Set();
+  state.SequenceEcrans = oneTabSequenceEcrans.reduce((acc, obj) => {
+    let value = obj.Ordre_Ecran;
+    while (seen.has(value)) {
+      value++;
+    }
+    seen.add(value);
+    acc.push({...obj, Ordre_Ecran: value});
+    return acc;
+  }, []);
+}
 
-    state.sequences = state.Device.data.Sequences;
-    (state.ecrans).forEach(ecran => {
-      console.log(ecran)
-      state.htmlData.push(marked(ecran.Ecran_id.Donnees))
-      state.Durees.push(minutesToSecondes(ecran.Ecran_id.Duree))
-
-
-      console.log(state.htmlData)
-      console.log(state.Durees)
-
-
-    });
-    // console.log(state.Durees[0])
-
-    // for (let i = 0; i < state.Durees.length; i++) {
-    // console.log(state.Durees[i])
-    setInterval(() => {
-
-          state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
-          nextTick(() => {
-            state.i = state.Durees[state.dataIndex]
-            console.log(state.i)
-            // console.log(state.Durees[state.dataIndex]);
-          });
-        }
-        , 3000
-    );
-    console.log(state.Durees[state.dataIndex])
-
-    // }
-
-    // setInterval(() => {
-    //     state.currentIndex = (state.currentIndex + 1) % state.htmlData.length
-    //     console.log(state.Durees[state.currentIndex])
-    // }
-    //     , state.Durees[state.currentIndex]);
-
+function orderingSequence(tab){
+  tab.sort((a, b) => {
+    return a.Ordre_Sequence - b.Ordre_Sequence
+  })
+}
+function buildingDataToDisplay(tab){
+  var styles = [];
+  tab.forEach(ecran =>{
+    styles.push(ecran.Ecran_id.Template)
+  })
+  tab.forEach(ecran => {
+    state.htmlData.push((marked(ecran.Ecran_id.Donnees)));
+    state.styleData.push(ecran.Ecran_id.Template)
   })
 }
 
-// function playAnimation(time) {
-//     window.requestAnimationFrame(playAnimation)
-//     console.log
-//     // 3108.748
-// }
-// window.requestAnimationFrame(playAnimation)
-// function sortedEcrans() {
-//     console.log(state.ecrans)
 
-//     return state.ecrans.sort((a, b) => {
-//         a.Ordre_Dispositif_Ecran - b.Ordre_Dispositif_Ecran
-//     })
+function addingStyleToH1(){
+  h1.color = (state.styleData)[state.dataIndex].h1.color;
+  h1.background_color = (state.styleData)[state.dataIndex].h1.background_color
+  h1.font_size = (state.styleData)[state.dataIndex].h1.font_size
+  h1.font_weight = (state.styleData)[state.dataIndex].h1.font_weight
+  h1.text_align = (state.styleData)[state.dataIndex].h1.text_align
+  h1.text_transform = (state.styleData)[state.dataIndex].h1.text_transform
 
-// }
+}
+
+function addingStyleToH2(){
+    h2.color = (state.styleData)[state.dataIndex].h2.color;
+    h2.background_color = (state.styleData)[state.dataIndex].h2.background_color
+    h2.font_size = (state.styleData)[state.dataIndex].h2.font_size
+    h2.font_weight = (state.styleData)[state.dataIndex].h2.font_weight
+    h2.text_align = (state.styleData)[state.dataIndex].h2.text_align
+    h2.text_transform = (state.styleData)[state.dataIndex].h2.text_transform
+
+}
+
+function addingStyleToH3(){
+  h3.color = (state.styleData)[state.dataIndex].h3.color;
+  h3.background_color = (state.styleData)[state.dataIndex].h3.background_color
+  h3.font_size = (state.styleData)[state.dataIndex].h3.font_size
+  h3.font_weight = (state.styleData)[state.dataIndex].h3.font_weight
+  h3.text_align = (state.styleData)[state.dataIndex].h3.text_align
+  h3.text_transform = (state.styleData)[state.dataIndex].h3.text_transform
+}
+
+function addingStyleToP(){
+    p.color = (state.styleData)[state.dataIndex].p.color;
+    p.background_color = (state.styleData)[state.dataIndex].p.background_color
+    p.font_size = (state.styleData)[state.dataIndex].p.font_size
+    p.text_align = (state.styleData)[state.dataIndex].p.text_align
+    p.text_transform = (state.styleData)[state.dataIndex].p.text_transform
+}
+function addingStyleToImg(){
+    img.border_radius = (state.styleData)[state.dataIndex].img.border_radius;
+    img.width = (state.styleData)[state.dataIndex].img.width
+}
+function getDeviceInformation() {
+  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*&access_token=${token.state.USER}`).catch((response)=>{
+    if ((response.response.data.errors[0].extensions.code === 'TOKEN_EXPIRED')){
+      axios.post(`https://74b3jzk3.directus.app/auth/refresh`,{ refresh_token : token.state.REFRESHUSER, mode : 'json' }).then(response => {
+        token.state.USER = response.data.data.access_token;
+        console.log(token.state.USER)
+
+        token.state.REFRESHUSER =response.data.data.refresh_token;
+      })
+
+    }
+
+  }).then(response => {
+
+    state.Device = response.data
+    console.log(state.Device)
+    state.sequences = state.Device.data.Sequences;
+    orderingSequence(state.sequences);
+
+   let SequenceEcrans = getAllEcransInOneData(state.sequences);
+   console.log(SequenceEcrans)
+    orderingEcrans(SequenceEcrans);
+   console.log(state.SequenceEcrans)
+    buildingDataToDisplay(state.SequenceEcrans);
+   console.log(state.styleData)
+    state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g,
+        "")
+    console.log(state.htmlData[state.dataIndex])
+
+    if (state.styleData.length !== 0){
+      addingStyleToH1();
+      addingStyleToH2()
+      addingStyleToH3()
+      addingStyleToP()
+      addingStyleToImg()
+    }
+  }).then(()=>{
+     setInterval(() => {
 
 
-// function displayData() {
+       state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
+       state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g,
+           "")
+       console.log(state.htmlData[state.dataIndex])
 
-//     (state.htmlData).forEach(data => {
-//         console.log(data)
-//         setTimeout(() => {
-//             state.dataToDislay = data
-//             console.log(state.dataToDislay)
-//         }, 3000)
+       if (state.styleData.length !== 0){
+            addingStyleToH1();
+            addingStyleToH2()
+            addingStyleToH3()
+            addingStyleToP()
+            addingStyleToImg()
+          }
 
-//     })
-
-// }
-
-
+        }, 100000
+    );
+  })
+}
 </script>
 <template>
-  <!-- <h1>Affichage</h1> -->
-  <!-- <button @click="displayData">go</button> -->
-  <div v-html="state.htmlData[state.dataIndex]">
-
+  <div class="content" v-if="state.sequences.length" v-html="state.htmlData[state.dataIndex]">
   </div>
-
-  <!-- <template v-for="ecran in state.htmlData" :key="ecran.id">
-      <div v-html="ecran">
-
-      </div>
-
-
-  </template> -->
+  <div v-else><h2>Il n'existe pas de séquences liées à ce dispositif !</h2> </div>
 </template>
 <style scoped>
+.content :deep(h1){
+  color: v-bind('h1.color');
+  font-size: v-bind('h1.font_size');
+  background-color: v-bind('h1.background_color');
+  text-transform: v-bind('h1.text_transform');
+  text-align: v-bind('h1.text_align');
+  font-weight: v-bind('h1.font_weight');
+}
+.content :deep(h2){
+  color: v-bind('h2.color');
+  font-size: v-bind('h2.font_size');
+  background-color: v-bind('h2.background_color');
+  text-transform: v-bind('h2.text_transform');
+  text-align: v-bind('h2.text_align');
+  font-weight: v-bind('h2.font_weight');
+}
+.content :deep(h3){
+  color: v-bind('h3.color');
+  font-size: v-bind('h3.font_size');
+  background-color: v-bind('h3.background_color');
+  text-transform: v-bind('h3.text_transform');
+  text-align: v-bind('h3.text_align');
+  font-weight: v-bind('h3.font_weight');
+}
+.content :deep(p){
+  color: v-bind('p.color');
+  font-size: v-bind('p.font_size');
+  background-color: v-bind('p.background_color');
+  text-transform: v-bind('p.text_transform');
+  text-align: v-bind('p.text_align');
+}
 
+.content :deep(img){
+  border-radius: v-bind('img.border_radius');
+  width: v-bind('img.width');
+}
 </style>

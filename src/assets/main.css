@@ -22,6 +22,10 @@ html, body, div, span{
   font-size: 100%;
 }
 
+body{
+  background-color: var(--dark-white);
+}
+
 a {
   text-decoration: none;
   color: var(--blue1);
@@ -53,13 +57,14 @@ button {
   min-width: 40px;
   min-height: 40px;
   color: var(--blue1);
-  padding: 5px 10px;
+  padding: 5px 1em;
   cursor: pointer;
   transition: all 0.3s ease;
   outline: none;
   border-radius: 20px;
   border: 2px solid var(--blue1);
   background: var(--white);
+  font-size: medium;
 }
 .is-primary {
   background: var(--blue1);
@@ -82,29 +87,76 @@ button:hover {
 
 h1{
   text-align: center;
+  font-size: xx-large;
 }
 
-
-#app {
-  margin: 0 auto;
-  padding: 2rem;
+.navbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1.5em;
+  box-shadow: 0 0 5px;
+  transition: all ease-in-out 0.3s;
+  z-index: 9;
+  background-color: white;
+}
+.navbar-menu{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
 }
 
-body {
+.arrow{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  position: absolute;
+  right: 6px;
+  top: 69px;
+  background-color: white;
+  padding: 2px 4px;
+  border-radius: 0 0 50% 50%;
+  box-shadow: 0 3px 3px;
+  transition: all ease-in-out 0.3s;
+}
+.arrow:hover {
+  opacity: 1;
+}
+.arrow-key { /* doit être en onCLick au lieu de hover */
+  rotate: 180deg;
+  border-radius: 50% 50% 0 0;
+  box-shadow: 0 -3px 3px;
+}
+.navbar-presence {
+  position: relative;
+  top: 0;
+  z-index: -1;
+}
+.navbar-absence {
+  position: relative;
+  top: -70px;
+  z-index: -1;
+}
+.section {
   display: flex;
   place-items: center;
-  height: 100vh;
+  flex-direction: column;
 }
 
 form {
   display: flex;
   flex-direction: column;
+  background-color: white;
   gap: 1em;
   padding: 1em;
   border-radius: 20px;
   box-shadow: 20px 20px 60px #d9d9d9,-20px -20px 60px #fff;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 1em auto;
 }
 
 .field{
@@ -125,4 +177,36 @@ form {
 
 h2 > span, h3 > span{
   font-weight: normal;
+}
+
+.content{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1em;
+  width: 100%;
+}
+.content img, .content p{
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+.content p img{
+  text-align: center;
+}
+
+tr, th, td, table, thead, tbody{
+  border: 1px solid black;
+
+}
+table{
+  max-width: 90%;
+  margin: 1em auto;
+}
+
+@media screen and (min-width: 480px){
+  html{
+    overflow: hidden;
+  }
 }
