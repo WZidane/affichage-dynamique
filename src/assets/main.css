@@ -22,6 +22,10 @@ html, body, div, span{
   font-size: 100%;
 }
 
+body{
+  background-color: var(--dark-white);
+}
+
 a {
   text-decoration: none;
   color: var(--blue1);
@@ -146,6 +150,7 @@ h1{
 form {
   display: flex;
   flex-direction: column;
+  background-color: white;
   gap: 1em;
   padding: 1em;
   border-radius: 20px;
@@ -178,13 +183,14 @@ h2 > span, h3 > span{
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
   padding: 1em;
+  width: 100%;
 }
 .content img, .content p{
   max-height: 100%;
   max-width: 100%;
+  object-fit: contain;
 }
 .content p img{
   text-align: center;
@@ -192,6 +198,11 @@ h2 > span, h3 > span{
 
 tr, th, td, table, thead, tbody{
   border: 1px solid black;
+
+}
+table{
+  max-width: 90%;
+  margin: 1em auto;
 }
 
 @media screen and (min-width: 480px){
