@@ -4,11 +4,12 @@ import Navbar from '@/components/NavBar.vue';
 import { provide, onMounted, reactive, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import {useSessionStore} from "@/stores/sessions";
-
 import { useGlobal } from '@/mixins/global';
 import mitt from 'mitt';
+import {useTokenStore} from "@/stores/token";
 
 const state = reactive({ appReady: false});
+const token = useTokenStore();
 
 const bus = mitt();
 provide('bus', bus);

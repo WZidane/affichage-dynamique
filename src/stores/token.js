@@ -1,5 +1,7 @@
 import { reactive } from 'vue';
 import { defineStore } from 'pinia';
+import {inject} from "@vue/runtime-core";
+import axios from 'axios';
 
 export const useTokenStore = defineStore(
   'token',
@@ -9,7 +11,8 @@ export const useTokenStore = defineStore(
       TOKEN: '',
       OBJ: 'Dispositif_Affichage/',
       DOMAIN: null,
-      USER: ''
+      USER: '',
+        REFRESHUSER:''
     });
 
     function setToken(token) {
@@ -23,6 +26,7 @@ export const useTokenStore = defineStore(
     function setDomain(domain) {
         return this.state.DOMAIN = domain;
     }
+
 
     function getDomain() {
         return state.DOMAIN;

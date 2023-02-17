@@ -23,6 +23,7 @@ let data = reactive({
 
 onMounted(() => {
   session.setNav();
+
 })
 
 function DisplayError() {
@@ -37,6 +38,8 @@ async function validationFormulaire() {
   axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
     token.state.USER = response.data.data.access_token;
+    console.log(response.data.data.refresh_token)
+    token.state.REFRESHUSER = response.data.data.refresh_token;
 
   }).catch(() => {
       DisplayError();
