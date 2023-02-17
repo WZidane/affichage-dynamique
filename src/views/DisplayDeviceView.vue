@@ -10,45 +10,45 @@ const token = useTokenStore();
 const session = useSessionStore();
 const axios = inject('axios');
 
-const h1 = reactive(({
+const backgroundColor = reactive({
+  color :''
+})
+const h1 = reactive({
   color : '',
   font_size: '',
   background_color:'',
   text_transform:'',
   text_align:'',
   font_weight:''
-}))
-const h2 = reactive(({
+})
+const h2 = reactive({
   color : '',
   font_size: '',
   background_color:'',
   text_transform:'',
   text_align:'',
   font_weight:''
-}))
-const h3 = reactive(({
+})
+const h3 = reactive({
   color : '',
   font_size: '',
   background_color:'',
   text_transform:'',
   text_align:'',
   font_weight:''
-}))
-const p = reactive(({
+})
+const p = reactive({
   color : '',
   font_size: '',
   background_color:'',
   text_transform:'',
   text_align:'',
-}))
-const a = reactive(({
-  color : '',
-  text_decoration:''
-}))
-const img = reactive(({
+})
+
+const img = reactive({
  border_radius:'',
   width:''
-}))
+})
 let state = reactive({
   Device: {},
   sequences: [],
@@ -102,7 +102,10 @@ function buildingDataToDisplay(tab){
   })
 }
 
-
+function addingBackgroundColor(){
+  backgroundColor.color = (state.styleData)[state.dataIndex].background_color.color;
+  console.log(backgroundColor.color)
+}
 function addingStyleToH1(){
   h1.color = (state.styleData)[state.dataIndex].h1.color;
   h1.background_color = (state.styleData)[state.dataIndex].h1.background_color
@@ -144,7 +147,7 @@ function addingStyleToImg(){
     img.width = (state.styleData)[state.dataIndex].img.width
 }
 function getDeviceInformation() {
-  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*&access_token=${token.state.USER}`).catch((response)=>{
+  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color&access_token=${token.state.USER}`).catch((response)=>{
     if ((response.response.data.errors[0].extensions.code === 'TOKEN_EXPIRED')){
       axios.post(`https://74b3jzk3.directus.app/auth/refresh`,{ refresh_token : token.state.REFRESHUSER, mode : 'json' }).then(response => {
         token.state.USER = response.data.data.access_token;
@@ -170,9 +173,9 @@ function getDeviceInformation() {
    console.log(state.styleData)
     state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g,
         "")
-    console.log(state.htmlData[state.dataIndex])
 
     if (state.styleData.length !== 0){
+      addingBackgroundColor()
       addingStyleToH1();
       addingStyleToH2()
       addingStyleToH3()
@@ -186,9 +189,9 @@ function getDeviceInformation() {
        state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
        state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g,
            "")
-       console.log(state.htmlData[state.dataIndex])
 
        if (state.styleData.length !== 0){
+            addingBackgroundColor()
             addingStyleToH1();
             addingStyleToH2()
             addingStyleToH3()
@@ -196,13 +199,13 @@ function getDeviceInformation() {
             addingStyleToImg()
           }
 
-        }, 100000
+        }, 7000
     );
   })
 }
 </script>
 <template>
-  <div class="content" v-if="state.sequences.length" v-html="state.htmlData[state.dataIndex]">
+  <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.sequences.length" v-html="state.htmlData[state.dataIndex]">
   </div>
   <div v-else><h2>Il n'existe pas de séquences liées à ce dispositif !</h2> </div>
 </template>
