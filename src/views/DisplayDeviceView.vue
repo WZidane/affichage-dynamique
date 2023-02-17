@@ -196,7 +196,7 @@ function getDeviceInformation() {
             addingStyleToImg()
           }
 
-        }, 100000
+        }, 7000
     );
   })
 }
