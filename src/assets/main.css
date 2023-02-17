@@ -174,11 +174,28 @@ h2 > span, h3 > span{
   font-weight: normal;
 }
 
-.display{
+.content{
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1em;
 }
-.display img{
-  max-width: 100%;
+.content img, .content p{
   max-height: 100%;
-  object-fit: contain;
+  max-width: 100%;
+}
+.content p img{
+  text-align: center;
+}
+
+tr, th, td, table, thead, tbody{
+  border: 1px solid black;
+}
+
+@media screen and (min-width: 480px){
+  html{
+    overflow: hidden;
+  }
 }
