@@ -16,7 +16,7 @@ export const useUserStore = defineStore('user', () => {
         isConnected.value = true;
     }
     async function disconnect() {
-        await isConnected.value = false;
+        isConnected.value = false;
         await session.unsetExist();
         await session.unsetNav();
         await router.push('/se-connecter').then(() => {
