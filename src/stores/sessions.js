@@ -22,7 +22,7 @@ export const useSessionStore = defineStore('session', () => {
     }
 
     function unsetExist() {
-        exist.value = false;
+        exist.value = null;
     }
 
     function setNav() {
