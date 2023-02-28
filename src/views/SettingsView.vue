@@ -61,8 +61,8 @@ async function getDeviceInformation() {
 
   <h1>Paramètres</h1>
     <h2>Vous êtes actuellement sur le domaine: <span>{{ state.Domain.Nom_Domaine }}</span></h2>
-    <h2>Données du dispositif d'affichage : <span>{{ state.NameDevice }}</span></h2>
-    <h3>Identifiant du dispositif : <span>{{ state.DeviceId }}</span></h3>
+    <h2>Nom du dispositif d'affichage : <span>{{ state.NameDevice }}</span></h2>
+    <!--<h3>Identifiant du dispositif : <span>{{ state.DeviceId }}</span></h3>-->
     <div>
         <h3 v-if="state.SequenceLength <= 0">Ce dispositif ne contient aucune séquence</h3>
         <h3 v-if="state.SequenceLength == 1">Ce dispositif contient {{ state.SequenceLength }} séquence : <span>{{ state.NameSequences[0] }}</span></h3>
