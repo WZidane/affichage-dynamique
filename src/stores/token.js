@@ -13,23 +13,7 @@ export const useTokenStore = defineStore(
       REFRESHUSER:''
     });
 
-    function setToken(token) {
-        return this.state.TOKEN = token;
-    }
-
-    function getToken() {
-        return state.TOKEN;
-    }
-
-    function setDomain(domain) {
-        return this.state.DOMAIN = domain;
-    }
-
-
-    function getDomain() {
-        return state.DOMAIN;
-    }
-    return { state, setToken, getToken, setDomain, getDomain };
+    return { state };
   },
   {
     persist: true,

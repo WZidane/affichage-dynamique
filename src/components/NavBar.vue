@@ -1,6 +1,5 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import {useUserStore} from "@/stores/user";
 import {useSessionStore} from "@/stores/sessions";
 import {reactive} from "vue";
 

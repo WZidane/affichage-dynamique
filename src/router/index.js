@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import DisplayDeviceView from '../views/DisplayDeviceView.vue';
-import UpdateDeviceView from '../views/UpdateDeviceView.vue';
-import SettingsView from '../views/SettingsView.vue';
 import ConnexionView from "@/views/ConnexionView.vue";
 
 const router = createRouter({
@@ -9,11 +7,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Settings',
-      component: SettingsView,
-    },
-    {
-      path: '/se-connecter',
       name: 'se-connecter',
       component: ConnexionView,
     },
@@ -21,11 +14,6 @@ const router = createRouter({
       path: '/DisplayDevice',
       name: 'DisplayDevice',
       component: DisplayDeviceView,
-    },
-    {
-      path: '/UpdateDevice',
-      name: 'UpdateDevice',
-      component: UpdateDeviceView,
     }
   ],
 });
