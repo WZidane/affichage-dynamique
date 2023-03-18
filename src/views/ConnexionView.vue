@@ -68,8 +68,24 @@ async function recupDomain() {
 
   <div class="connexionView">
 
-    <h1>SE CONNECTER</h1>
+    <h1>TOKEN DISPOSITIF</h1>
 
+    <form @submit.prevent="validationFormulaire">
+
+      <div class="field">
+        <label class="label">TOKEN</label>
+        <input class="input" v-model="user.email" type="token" placeholder="ID du dispositif">
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="is-primary">Valider</button>
+        </div>
+      </div>
+
+    </form>
+
+    <!--
     <form @submit.prevent="validationFormulaire">
 
       <div class="field">
@@ -88,10 +104,12 @@ async function recupDomain() {
         </div>
       </div>
 
+
       <p v-if="data.error !== ''">
           {{ data.error }}
       </p>
     </form>
+    -->
 
   </div>
 
