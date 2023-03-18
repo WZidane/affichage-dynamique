@@ -1,6 +1,5 @@
 <script setup>
 import { inject, reactive } from 'vue'
-import {useUserStore} from "@/stores/user";
 import {useTokenStore} from "@/stores/token";
 import {onMounted} from "@vue/runtime-core";
 
@@ -9,14 +8,15 @@ const router = inject('router');
 const session = inject('session');
 const token = useTokenStore();
 
-let user = reactive({
+/*let user = reactive({
   email: '',
   password: ''
-});
+});*/
 
 let data = reactive({
   status: "",
   domaine: 0,
+  token: "",
   error: ""
 })
 
@@ -35,7 +35,7 @@ function DisplaySuccess() {
 }
 
 async function validationFormulaire() {
-  axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
+/*  axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
     data.status = response.statusText;
     token.state.USER = response.data.data.access_token;
     console.log(response.data.data.refresh_token)
@@ -49,6 +49,13 @@ async function validationFormulaire() {
       useUserStore().setConnected();
       recupDomain();
     }
+  })*/
+
+  axios.get(`https://74b3jzk3.directus.app/items/Dispositif_Affichage/?filter[id][_eq]=${token.state.TOKEN}`).catch(() => {
+    DisplayError();
+  }).then(() => {
+    DisplaySuccess();
+    router.push('/DisplayDevice');
   })
 
 }
@@ -74,7 +81,7 @@ async function recupDomain() {
 
       <div class="field">
         <label class="label">TOKEN</label>
-        <input class="input" v-model="user.email" type="token" placeholder="ID du dispositif">
+        <input class="input" v-model="data.token" placeholder="ID du dispositif">
       </div>
 
       <div class="field is-grouped">
