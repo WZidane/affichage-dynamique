@@ -44,7 +44,6 @@ function validationFormulaire() {
 <template>
   <div class="connexionView">
     <h1>TOKEN de l'écran</h1>
-
     <form @submit.prevent="validationFormulaire">
       <div class="field">
         <label class="label">Identifiant du dispositif</label>
