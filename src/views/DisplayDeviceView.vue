@@ -147,7 +147,40 @@ function addingStyleToImg(){
     img.width = (state.styleData)[state.dataIndex].img.width
 }
 function getDeviceInformation() {
-  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=Sequences.Ordre_Sequence,Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,Sequences.Sequence_id.Ecrans.Ordre_Ecran,Sequences.Sequence_id.Ecrans.Ecran_id.Duree,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Theme,Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.a.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.*,Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color&access_token=${token.state.USER}`).catch((response)=>{
+
+  axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}&fields=
+        id,
+          Sequences.Ordre_Sequence,
+          Sequences.Sequence_id.Ecrans.Ordre_Ecran,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Duree,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.text_transform,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.font_size,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.text_align,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.background_color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.font_weight,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.text_transform,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.font_size,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.text_align,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.background_color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.font_weight,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.text_transform,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.font_size,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.text_align,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.background_color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.font_weight,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.text_transform,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.font_size,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.text_align,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.background_color,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.border_radius,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.width,
+          Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).catch((response)=>{
     if ((response.response.data.errors[0].extensions.code === 'TOKEN_EXPIRED')){
       axios.post(`https://74b3jzk3.directus.app/auth/refresh`,{ refresh_token : token.state.REFRESHUSER, mode : 'json' }).then(response => {
         token.state.USER = response.data.data.access_token;
