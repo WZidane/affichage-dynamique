@@ -1,12 +1,8 @@
 <script setup>
-import { useRouter } from 'vue-router';
 import {useSessionStore} from "@/stores/sessions";
 import {reactive} from "vue";
 
-
-const router = useRouter()
 const session = useSessionStore();
-const user = useUserStore();
 const arr = reactive({
   bool: true,
 });
@@ -37,30 +33,8 @@ function arrow() {
         <img src="/logo-title.png" height="50" alt="logo">
       </router-link>
     </div>
-    <template v-if="user.isConnected && session.navbar === true">
+    <template v-if="session.navbar === true">
       <div class="navbar-menu">
-
-          <router-link to="/DisplayDevice" class="navbar-item">
-            Affichage
-          </router-link>
-
-          <router-link to="/" class="navbar-item">
-            Paramètres
-          </router-link>
-
-          <button @click="user.disconnect()" class="button">
-            Se déconnecter
-          </button>
-
-      </div>
-    </template>
-    <template v-if="user.isConnected && session.navbar === false">
-      <div class="navbar-menu">
-
-        <button @click="user.disconnect()" class="button">
-          Se déconnecter
-        </button>
-
       </div>
     </template>
   </nav>
@@ -70,20 +44,8 @@ function arrow() {
         <img src="/logo-title.png" height="50" alt="logo">
       </router-link>
     </div>
-    <template v-if="user.isConnected && session.navbar === true && $route.path === '/DisplayDevice'">
+    <template v-if="session.navbar === true && $route.path === '/DisplayDevice'">
       <div class="navbar-menu">
-
-        <router-link to="/DisplayDevice" class="navbar-item">
-          Affichage
-        </router-link>
-
-        <router-link to="/" class="navbar-item">
-          Paramètres
-        </router-link>
-
-        <button @click="user.disconnect()" class="button">
-          Se déconnecter
-        </button>
 
       </div>
       <span :class="arrows.class" @click="arrow()">▼</span>
