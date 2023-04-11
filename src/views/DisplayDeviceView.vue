@@ -5,7 +5,6 @@ import {useTokenStore} from "@/stores/token";
 import {marked} from 'marked';
 
 const token = useTokenStore();
-const session = useSessionStore();
 const axios = inject('axios');
 const backgroundColor = reactive({
     color: ''
