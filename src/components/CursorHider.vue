@@ -23,8 +23,8 @@ export default {
             if (this.cursorTimer) {
                 clearTimeout(this.cursorTimer)
             }
-            // On lance le timer pour cacher le curseur dans 0.5 secondes
-            this.cursorTimer = setTimeout(this.hideCursor, 500)
+            // On lance le timer pour cacher le curseur dans 1 seconde
+            this.cursorTimer = setTimeout(this.hideCursor, 1000)
             // On remet le curseur visible
             this.showCursor()
         },
