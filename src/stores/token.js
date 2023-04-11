@@ -8,8 +8,6 @@ export const useTokenStore = defineStore(
       BASE: 'https://74b3jzk3.directus.app/items/',
       TOKEN: '',
       OBJ: 'Dispositif_Affichage/',
-      DOMAIN: null,
-      USER: '',
       REFRESHUSER:''
     });
 

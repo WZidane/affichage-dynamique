@@ -32,8 +32,7 @@ function validationFormulaire() {
 
   axios.get(`https://74b3jzk3.directus.app/items/Dispositif_Affichage/?filter[id][_eq]=${token.state.TOKEN}`).then(() => {
     DisplaySuccess();
-    console.log('OK!');
-     router.push('/DisplayDevice');
+    router.push('/DisplayDevice');
   }).catch(() => {
     DisplayError();
   })
