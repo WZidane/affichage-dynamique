@@ -1,7 +1,6 @@
-import { createApp, provide } from 'vue';
-import { createPinia } from 'pinia';
+import {createApp} from 'vue';
+import {createPinia} from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import VueFullscreen from 'vue-fullscreen'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 
@@ -18,5 +17,4 @@ app.use(pinia)
 app.use(router);
 app.use(VueAxios, axios);
 app.provide('axios', app.config.globalProperties.axios);
-app.use(VueFullscreen)
 app.mount('#app');

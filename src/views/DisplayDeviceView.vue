@@ -56,19 +56,11 @@ let state = reactive({
     fullscreen: true,
 
 });
+
 onMounted(() => {
     getDeviceInformation()
-    // startPolling();
-
     document.documentElement.requestFullscreen();
 })
-
-/*
-onUnmounted(() => {
-    clearInterval(state.intervalId2)
-    clearInterval(state.intervalId);
-});
-*/
 
 
 function getAllEcransInOneData(tab) {
@@ -92,12 +84,6 @@ function orderingEcrans(tab) {
         acc.push({...obj, Ordre_Ecran: value});
         return acc;
     }, []);
-
-    /*  state.SequenceEcrans =  state.SequenceEcrans.filter((ecran) =>{
-         return ecran.Ordre_Ecran === -1
-     });
-      console.log(state.SequenceEcrans)*/
-
 }
 
 function orderingSequence(tab) {
@@ -228,26 +214,19 @@ function getDeviceInformation() {
         );
     })
 }
-
-// ça pour vérifier si il y a un changement de donnée ou pas
-
-/*const startPolling = () => {
-    setInterval(async () => {
-        await getDeviceInformation();
-    }, 50000);
-};*/
 </script>
 
 <template>
     <CursorHider/>
+
     <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.sequences.length"
          v-html="state.htmlData[state.dataIndex]">
     </div>
-  <!--    <fullscreen  :fullscreen.sync="state.fullscreen" class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.sequences.length"
-           v-html="state.htmlData[state.dataIndex]" v-fullscreen>
-      </fullscreen>-->
-    <div v-else><h2>Il n'existe pas de séquences liées à ce dispositif !</h2></div>
+    <div v-else>
+        <h2>Il n'existe pas de séquences liées à ce dispositif !</h2>
+    </div>
 </template>
+
 <style scoped>
 .content :deep(h1) {
     color: v-bind('h1.color');

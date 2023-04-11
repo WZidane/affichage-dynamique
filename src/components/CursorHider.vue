@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'DevicePage',
+    name: 'CursorHider',
     data() {
         return {
             cursorTimer: null,
@@ -10,6 +10,7 @@ export default {
     mounted() {
         // On écoute les mouvements de la souris pour réinitialiser le timer
         document.addEventListener('mousemove', this.resetCursorTimer)
+
         // On cache le curseur au chargement de la page
         this.hideCursor()
     },

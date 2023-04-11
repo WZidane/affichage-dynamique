@@ -23,7 +23,6 @@ onMounted(() => {
     demarrer();
 });
 
-
 function demarrer() {
     state.appReady = true;
 }
@@ -34,7 +33,7 @@ function demarrer() {
         <Navbar v-if="$route.path !== '/DisplayDevice'"/>
     </header>
     <body v-if="state.appReady">
-      <RouterView/>
+        <RouterView/>
     </body>
 </template>
 
