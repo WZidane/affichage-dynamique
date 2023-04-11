@@ -3,7 +3,9 @@ import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import {marked} from 'marked';
+
 const token = useTokenStore();
+const session = useSessionStore();
 const axios = inject('axios');
 const backgroundColor = reactive({
     color :''
@@ -56,6 +58,7 @@ let state = reactive({
 onMounted(() => {
     getAlertDeviceInformation();
     document.documentElement.requestFullscreen();
+
 })
 /*
 onUnmounted(() => {
@@ -107,6 +110,7 @@ function buildingDataToDisplay(tab){
 }
 function addingBackgroundColor(){
     backgroundColor.color = (state.styleData)[state.dataIndex].background_color.color;
+    console.log(backgroundColor.color)
 }
 function addingStyleToH1(){
     h1.color = (state.styleData)[state.dataIndex].h1.color;
@@ -203,9 +207,12 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.border_radius,
 Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.width,
 Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(response => {
         state.Device = response.data.data
+        console.log(state.Device)
+        console.log(state.Device.Sequences)
         state.sequences = state.Device.Sequences;
         orderingSequence(state.sequences);
         let SequenceEcrans = getAllEcransInOneData(state.sequences);
+        console.log(SequenceEcrans)
         orderingEcrans(SequenceEcrans);
         buildingDataToDisplay(state.SequenceEcrans);
 
