@@ -1,58 +1,58 @@
 <script setup>
-import { onMounted, reactive } from "@vue/runtime-core";
-import { inject } from "@vue/runtime-core";
-import { useTokenStore } from "@/stores/token";
+import {onMounted, reactive} from "@vue/runtime-core";
+import {inject} from "@vue/runtime-core";
+import {useTokenStore} from "@/stores/token";
 import {marked} from 'marked';
 
 const token = useTokenStore();
 const session = useSessionStore();
 const axios = inject('axios');
 const backgroundColor = reactive({
-    color :''
+    color: ''
 })
 const h1 = reactive({
-    color : '',
+    color: '',
     font_size: '',
-    background_color:'',
-    text_transform:'',
-    text_align:'',
-    font_weight:''
+    background_color: '',
+    text_transform: '',
+    text_align: '',
+    font_weight: ''
 })
 const h2 = reactive({
-    color : '',
+    color: '',
     font_size: '',
-    background_color:'',
-    text_transform:'',
-    text_align:'',
-    font_weight:''
+    background_color: '',
+    text_transform: '',
+    text_align: '',
+    font_weight: ''
 })
 const h3 = reactive({
-    color : '',
+    color: '',
     font_size: '',
-    background_color:'',
-    text_transform:'',
-    text_align:'',
-    font_weight:''
+    background_color: '',
+    text_transform: '',
+    text_align: '',
+    font_weight: ''
 })
 const p = reactive({
-    color : '',
+    color: '',
     font_size: '',
-    background_color:'',
-    text_transform:'',
-    text_align:'',
+    background_color: '',
+    text_transform: '',
+    text_align: '',
 })
 const img = reactive({
-    border_radius:'',
-    width:''
+    border_radius: '',
+    width: ''
 })
 let state = reactive({
     Device: {},
     sequences: [],
-    SequenceEcrans : [],
+    SequenceEcrans: [],
     htmlData: [],
-    styleData:[],
+    styleData: [],
     dataIndex: 0,
-    EcranAlert : {},
+    EcranAlert: {},
     Durees: [],
 });
 onMounted(() => {
@@ -60,6 +60,7 @@ onMounted(() => {
     document.documentElement.requestFullscreen();
 
 })
+
 /*
 onUnmounted(() => {
     clearInterval(state.intervalId2)
@@ -68,51 +69,57 @@ onUnmounted(() => {
 */
 
 
-function getAllEcransInOneData(tab){
+function getAllEcransInOneData(tab) {
     let permenantSequenceEcrans = [];
     tab.forEach(sequence => {
-        permenantSequenceEcrans.push( sequence.Sequence_id.Ecrans) ;
+        permenantSequenceEcrans.push(sequence.Sequence_id.Ecrans);
     })
-    return  permenantSequenceEcrans;
+    return permenantSequenceEcrans;
 }
-function orderingEcrans(tab){
-    let oneTabSequenceEcrans = tab.reduce((acc,current)=> acc.concat(current),[]);
+
+function orderingEcrans(tab) {
+    let oneTabSequenceEcrans = tab.reduce((acc, current) => acc.concat(current), []);
     let seen = new Set();
     state.SequenceEcrans = oneTabSequenceEcrans.reduce((acc, obj) => {
-        let value = obj.Ordre_Ecran;
-        while (seen.has(value)) {
-            value++;
-        }
-        seen.add(value);
-        acc.push({...obj, Ordre_Ecran: value});
-        return acc;
-    }, []);
-
+            let value = obj.Ordre_Ecran;
+            while (seen.has(value)) {
+                value++;
+            }
+            seen.add(value);
+            acc.push({...obj, Ordre_Ecran: value});
+            return acc;
+        }, []
+    );
 }
+
 function minutesToSecondes(m) {
     return m * 1000
 }
-function orderingSequence(tab){
+
+function orderingSequence(tab) {
     tab.sort((a, b) => {
         return a.Ordre_Sequence - b.Ordre_Sequence
     })
 }
-function buildingAlertDataToDisplay(data){
+
+function buildingAlertDataToDisplay(data) {
     state.htmlData.push((marked(data.Donnees)));
     state.styleData.push(data.Template)
 }
-function buildingDataToDisplay(tab){
+
+function buildingDataToDisplay(tab) {
     tab.forEach(ecran => {
         state.htmlData.push((marked(ecran.Ecran_id.Donnees)));
         state.styleData.push(ecran.Ecran_id.Template)
         state.Durees.push(minutesToSecondes(ecran.Ecran_id.Duree))
     })
 }
-function addingBackgroundColor(){
+
+function addingBackgroundColor() {
     backgroundColor.color = (state.styleData)[state.dataIndex].background_color.color;
-    console.log(backgroundColor.color)
 }
-function addingStyleToH1(){
+
+function addingStyleToH1() {
     h1.color = (state.styleData)[state.dataIndex].h1.color;
     h1.background_color = (state.styleData)[state.dataIndex].h1.background_color
     h1.font_size = (state.styleData)[state.dataIndex].h1.font_size
@@ -120,7 +127,8 @@ function addingStyleToH1(){
     h1.text_align = (state.styleData)[state.dataIndex].h1.text_align
     h1.text_transform = (state.styleData)[state.dataIndex].h1.text_transform
 }
-function addingStyleToH2(){
+
+function addingStyleToH2() {
     h2.color = (state.styleData)[state.dataIndex].h2.color;
     h2.background_color = (state.styleData)[state.dataIndex].h2.background_color
     h2.font_size = (state.styleData)[state.dataIndex].h2.font_size
@@ -128,7 +136,8 @@ function addingStyleToH2(){
     h2.text_align = (state.styleData)[state.dataIndex].h2.text_align
     h2.text_transform = (state.styleData)[state.dataIndex].h2.text_transform
 }
-function addingStyleToH3(){
+
+function addingStyleToH3() {
     h3.color = (state.styleData)[state.dataIndex].h3.color;
     h3.background_color = (state.styleData)[state.dataIndex].h3.background_color
     h3.font_size = (state.styleData)[state.dataIndex].h3.font_size
@@ -136,19 +145,21 @@ function addingStyleToH3(){
     h3.text_align = (state.styleData)[state.dataIndex].h3.text_align
     h3.text_transform = (state.styleData)[state.dataIndex].h3.text_transform
 }
-function addingStyleToP(){
+
+function addingStyleToP() {
     p.color = (state.styleData)[state.dataIndex].p.color;
     p.background_color = (state.styleData)[state.dataIndex].p.background_color
     p.font_size = (state.styleData)[state.dataIndex].p.font_size
     p.text_align = (state.styleData)[state.dataIndex].p.text_align
     p.text_transform = (state.styleData)[state.dataIndex].p.text_transform
 }
-function addingStyleToImg(){
+
+function addingStyleToImg() {
     img.border_radius = (state.styleData)[state.dataIndex].img.border_radius;
     img.width = (state.styleData)[state.dataIndex].img.width
 }
 
-function getAlertDeviceInformation(){
+function getAlertDeviceInformation() {
     axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=
 Ecran_Alerte.Donnees,
 Ecran_Alerte.Template.h1.*,
@@ -158,10 +169,10 @@ Ecran_Alerte.Template.p.*,
 Ecran_Alerte.Template.img.*,
 Ecran_Alerte.Template.background_color.*`).then(response => {
         state.EcranAlert = response.data.data.Ecran_Alerte
-        if (state.EcranAlert !== null){
+        if (state.EcranAlert !== null) {
             buildingAlertDataToDisplay(state.EcranAlert)
-            state.htmlData[0] = state.htmlData[0].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
-            if (state.styleData.length !== 0){
+            state.htmlData[0] = state.htmlData[0].replace(/(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
+            if (state.styleData.length !== 0) {
                 addingBackgroundColor()
                 addingStyleToH1();
                 addingStyleToH2()
@@ -169,10 +180,10 @@ Ecran_Alerte.Template.background_color.*`).then(response => {
                 addingStyleToP()
                 addingStyleToImg()
             }
-        }
-        else getDeviceInformation()
+        } else getDeviceInformation()
     })
 }
+
 function getDeviceInformation() {
     axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=
 Sequences.Ordre_Sequence,
@@ -216,7 +227,7 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
         orderingEcrans(SequenceEcrans);
         buildingDataToDisplay(state.SequenceEcrans);
 
-    }).then(()=>{
+    }).then(() => {
         function test() {
             state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
             state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace(/(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
@@ -230,21 +241,26 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
             }
             setTimeout(test, state.Durees[state.dataIndex]);
         }
+
         setTimeout(test, state.Durees[state.dataIndex]);
     })
 }
 
 </script>
+
 <template>
     <CursorHider/>
+
     <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.EcranAlert"
          v-html="state.htmlData[0]">
     </div>
     <div class="content" :style="{ 'background-color':backgroundColor.color}" v-else-if="state.sequences.length"
          v-html="state.htmlData[state.dataIndex]">
     </div>
+
     <div v-else><h2>Il n'existe pas de séquences liées à ce dispositif !</h2></div>
 </template>
+
 <style scoped>
 .content :deep(h1) {
     color: v-bind('h1.color');
@@ -254,6 +270,7 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
     text-align: v-bind('h1.text_align');
     font-weight: v-bind('h1.font_weight');
 }
+
 .content :deep(h2) {
     color: v-bind('h2.color');
     font-size: v-bind('h2.font_size');
@@ -262,6 +279,7 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
     text-align: v-bind('h2.text_align');
     font-weight: v-bind('h2.font_weight');
 }
+
 .content :deep(h3) {
     color: v-bind('h3.color');
     font-size: v-bind('h3.font_size');
@@ -270,6 +288,7 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
     text-align: v-bind('h3.text_align');
     font-weight: v-bind('h3.font_weight');
 }
+
 .content :deep(p) {
     color: v-bind('p.color');
     font-size: v-bind('p.font_size');
@@ -277,6 +296,7 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
     text-transform: v-bind('p.text_transform');
     text-align: v-bind('p.text_align');
 }
+
 .content :deep(img) {
     border-radius: v-bind('img.border_radius');
     width: v-bind('img.width');
