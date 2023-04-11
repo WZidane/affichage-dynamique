@@ -1,10 +1,10 @@
-<!--suppress ALL -->
 <script setup>
 import { onMounted, reactive } from "@vue/runtime-core";
 import { inject } from "@vue/runtime-core";
 import { useTokenStore } from "@/stores/token";
 import {marked} from 'marked';
 import {useSessionStore} from "@/stores/sessions";
+import {onUnmounted} from "vue";
 const token = useTokenStore();
 const session = useSessionStore();
 const axios = inject('axios');
@@ -53,18 +53,21 @@ let state = reactive({
     htmlData: [],
     styleData:[],
     dataIndex: 0,
-    EcranAlert : {},
-    time : 2000,
-    Durees: [],
+    fullscreen : true,
 
 });
 onMounted(() => {
     console.log('one device');
     session.setNav();
-    getAlertDeviceInformation()
-   // getDeviceInformation()
+    getDeviceInformation()
    // startPolling();
 })
+/*
+onUnmounted(() => {
+    clearInterval(state.intervalId2)
+    clearInterval(state.intervalId);
+});
+*/
 
 
 function getAllEcransInOneData(tab){
@@ -88,25 +91,26 @@ function orderingEcrans(tab){
         acc.push({...obj, Ordre_Ecran: value});
         return acc;
     }, []);
-}
-function minutesToSecondes(m) {
-    return m * 1000
+
+  /*  state.SequenceEcrans =  state.SequenceEcrans.filter((ecran) =>{
+       return ecran.Ordre_Ecran === -1
+   });
+    console.log(state.SequenceEcrans)*/
+
 }
 function orderingSequence(tab){
     tab.sort((a, b) => {
         return a.Ordre_Sequence - b.Ordre_Sequence
     })
 }
-function buildingAlertDataToDisplay(data){
-    state.htmlData.push((marked(data.Donnees)));
-    state.styleData.push(data.Template)
-}
 function buildingDataToDisplay(tab){
     var styles = [];
+    tab.forEach(ecran =>{
+        styles.push(ecran.Ecran_id.Template)
+    })
     tab.forEach(ecran => {
         state.htmlData.push((marked(ecran.Ecran_id.Donnees)));
         state.styleData.push(ecran.Ecran_id.Template)
-        state.Durees.push(minutesToSecondes(ecran.Ecran_id.Duree))
     })
 }
 function addingBackgroundColor(){
@@ -147,37 +151,6 @@ function addingStyleToP(){
 function addingStyleToImg(){
     img.border_radius = (state.styleData)[state.dataIndex].img.border_radius;
     img.width = (state.styleData)[state.dataIndex].img.width
-}
-
-function getAlertDeviceInformation(){
-    axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=
-Ecran_Alerte.Donnees,
-Ecran_Alerte.Template.h1.*,
-Ecran_Alerte.Template.h2.*,
-Ecran_Alerte.Template.h3.*,
-Ecran_Alerte.Template.p.*,
-Ecran_Alerte.Template.img.*,
-Ecran_Alerte.Template.background_color.*`).then(response => {
-    state.EcranAlert = response.data.data.Ecran_Alerte
-        console.log(state.EcranAlert)
-        if (state.EcranAlert !== null){
-            buildingAlertDataToDisplay(state.EcranAlert)
-            console.log(state.htmlData)
-            console.log(state.styleData)
-            state.htmlData[0] = state.htmlData[0].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
-
-            if (state.styleData.length !== 0){
-                addingBackgroundColor()
-                addingStyleToH1();
-                addingStyleToH2()
-                addingStyleToH3()
-                addingStyleToP()
-                addingStyleToImg()
-            }
-            console.log(state.htmlData[0])
-        }
-        else getDeviceInformation()
-    })
 }
 function getDeviceInformation() {
     axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=
@@ -222,40 +195,51 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
         orderingEcrans(SequenceEcrans);
         console.log(state.SequenceEcrans)
         buildingDataToDisplay(state.SequenceEcrans);
-    }).then(()=>{
-        function test() {
-            state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
-            state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace(/(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
-            if (state.styleData.length !== 0) {
-                addingBackgroundColor()
-                addingStyleToH1();
-                addingStyleToH2()
-                addingStyleToH3()
-                addingStyleToP()
-                addingStyleToImg()
-
-            }
-            console.log(state.Durees[state.dataIndex])
-            setTimeout(test, state.Durees[state.dataIndex]);
+        console.log(state.htmlData)
+        console.log(state.styleData)
+        state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
+        if (state.styleData.length !== 0){
+            addingBackgroundColor()
+            addingStyleToH1();
+            addingStyleToH2()
+            addingStyleToH3()
+            addingStyleToP()
+            addingStyleToImg()
         }
-        setTimeout(test, state.Durees[state.dataIndex]);
+    }).then(()=>{
+     setInterval(() => {
 
-
+                state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
+                state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace( /(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
+                if (state.styleData.length !== 0){
+                    addingBackgroundColor()
+                    addingStyleToH1();
+                    addingStyleToH2()
+                    addingStyleToH3()
+                    addingStyleToP()
+                    addingStyleToImg()
+                }
+            }, 7000
+        );
     })
 }
 
+// ça pour vérifier si il y a un changement de donnée ou pas
+
+/*const startPolling = () => {
+    setInterval(async () => {
+        await getDeviceInformation();
+    }, 50000);
+};*/
 </script>
 <template>
-    <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.EcranAlert"
-         v-html="state.htmlData[0]">
+    <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.sequences.length"
+                 v-html="state.htmlData[state.dataIndex]" >
     </div>
-    <div class="content" :style="{ 'background-color':backgroundColor.color}" v-else-if="state.sequences.length"
-         v-html="state.htmlData[state.dataIndex]">
-    </div>
-    <div v-else>
-        <h2>Il n'existe pas de séquences liées à ce dispositif !</h2>
-    </div>
-
+<!--    <fullscreen  :fullscreen.sync="state.fullscreen" class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.sequences.length"
+         v-html="state.htmlData[state.dataIndex]" v-fullscreen>
+    </fullscreen>-->
+    <div v-else><h2>Il n'existe pas de séquences liées à ce dispositif !</h2></div>
 </template>
 <style scoped>
 .content :deep(h1) {

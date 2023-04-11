@@ -1,12 +1,11 @@
 <script setup>
 
 import Navbar from '@/components/NavBar.vue';
-import { provide, onMounted, reactive, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import {useSessionStore} from "@/stores/sessions";
+import {provide, onMounted, reactive, watch} from 'vue';
+import {useRouter, useRoute} from 'vue-router';
 import mitt from 'mitt';
 
-const state = reactive({ appReady: false});
+const state = reactive({appReady: false});
 
 const bus = mitt();
 provide('bus', bus);
@@ -14,20 +13,15 @@ provide('bus', bus);
 const router = useRouter();
 provide('router', router);
 
-const session = useSessionStore();
-provide('session', session);
-
 const route = useRoute();
 
 watch(route, () => {
-  demarrer();
+    demarrer();
 });
 
 onMounted(() => {
-  demarrer();
+    demarrer();
 });
-
-
 
 function demarrer() {
     state.appReady = true;
@@ -35,23 +29,16 @@ function demarrer() {
 </script>
 
 <template>
-    <Navbar />
-  <template v-if="$route.path === '/DisplayDevice'">
-    <section :class="session.section.class">
-      <template v-if="state.appReady">
-        <RouterView />
-      </template>
-    </section>
-  </template>
-  <section v-if="$route.path !== '/DisplayDevice'" class="section">
-    <template v-if="state.appReady">
-      <RouterView />
-    </template>
-  </section>
+    <header>
+        <Navbar v-if="$route.path !== '/DisplayDevice'"/>
+    </header>
+    <body v-if="state.appReady">
+        <RouterView/>
+    </body>
 </template>
 
 <style>
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 </style>
