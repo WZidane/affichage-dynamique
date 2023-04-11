@@ -7,8 +7,7 @@ export const useTokenStore = defineStore(
     const state = reactive({
       BASE: 'https://74b3jzk3.directus.app/items/',
       TOKEN: '',
-      OBJ: 'Dispositif_Affichage/',
-      REFRESHUSER:''
+      OBJ: 'Dispositif_Affichage/'
     });
 
     return { state };

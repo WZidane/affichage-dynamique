@@ -1,10 +1,3 @@
-<script setup>
-import {useSessionStore} from "@/stores/sessions";
-
-const session = useSessionStore();
-
-</script>
-
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">

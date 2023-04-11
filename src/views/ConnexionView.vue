@@ -1,11 +1,9 @@
 <script setup>
 import { inject, reactive } from 'vue'
 import {useTokenStore} from "@/stores/token";
-import {onMounted} from "@vue/runtime-core";
 
 const axios = inject('axios');
 const router = inject('router');
-const session = inject('session');
 const token = useTokenStore();
 
 
@@ -13,10 +11,6 @@ let data = reactive({
   status: "",
   token: "",
   error: ""
-})
-
-onMounted(() => {
-  session.setNav();
 })
 
 function DisplayError() {

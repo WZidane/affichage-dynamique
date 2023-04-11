@@ -3,11 +3,9 @@ import {onMounted, reactive} from "@vue/runtime-core";
 import {inject} from "@vue/runtime-core";
 import {useTokenStore} from "@/stores/token";
 import {marked} from 'marked';
-import {useSessionStore} from "@/stores/sessions";
 import CursorHider from "@/components/CursorHider.vue";
 
 const token = useTokenStore();
-const session = useSessionStore();
 const axios = inject('axios');
 
 const backgroundColor = reactive({
@@ -59,7 +57,6 @@ let state = reactive({
 
 });
 onMounted(() => {
-    session.setNav();
     getDeviceInformation()
     // startPolling();
 
@@ -166,37 +163,37 @@ function addingStyleToImg() {
 
 function getDeviceInformation() {
     axios.get(`${token.state.BASE}${token.state.OBJ}${token.state.TOKEN}?fields=
-Sequences.Ordre_Sequence,
-Sequences.Sequence_id.Ecrans.Ordre_Ecran,
-Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,
-Sequences.Sequence_id.Ecrans.Ecran_id.Duree,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.text_transform,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.font_size,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.text_align,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.background_color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.font_weight,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.text_transform,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.font_size,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.text_align,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.background_color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.font_weight,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.text_transform,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.font_size,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.text_align,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.background_color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.font_weight,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.text_transform,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.font_size,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.text_align,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.background_color,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.border_radius,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.width,
-Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(response => {
+        Sequences.Ordre_Sequence,
+        Sequences.Sequence_id.Ecrans.Ordre_Ecran,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Donnees,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Duree,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.Nom_Template,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.text_transform,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.font_size,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.text_align,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.background_color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h1.font_weight,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.text_transform,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.font_size,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.text_align,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.background_color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h2.font_weight,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.text_transform,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.font_size,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.text_align,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.background_color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.h3.font_weight,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.text_transform,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.font_size,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.text_align,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.p.background_color,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.border_radius,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.width,
+        Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(response => {
         state.Device = response.data.data
         state.sequences = state.Device.Sequences;
         orderingSequence(state.sequences);
@@ -217,7 +214,6 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
         }
     }).then(() => {
         setInterval(() => {
-
                 state.dataIndex = (state.dataIndex + 1) % state.htmlData.length
                 state.htmlData[state.dataIndex] = state.htmlData[state.dataIndex].replace(/(<\/?p[^>]*>)(?=<img.+>)|(<\/?p[^>]*>)(?<=<img.+>)/g, "")
                 if (state.styleData.length !== 0) {
@@ -241,6 +237,7 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
     }, 50000);
 };*/
 </script>
+
 <template>
     <CursorHider/>
     <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.sequences.length"

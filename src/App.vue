@@ -3,7 +3,6 @@
 import Navbar from '@/components/NavBar.vue';
 import {provide, onMounted, reactive, watch} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
-import {useSessionStore} from "@/stores/sessions";
 import mitt from 'mitt';
 
 const state = reactive({appReady: false});
@@ -13,9 +12,6 @@ provide('bus', bus);
 
 const router = useRouter();
 provide('router', router);
-
-const session = useSessionStore();
-provide('session', session);
 
 const route = useRoute();
 
