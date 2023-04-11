@@ -1,12 +1,12 @@
 <script setup>
 
 import Navbar from '@/components/NavBar.vue';
-import { provide, onMounted, reactive, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import {provide, onMounted, reactive, watch} from 'vue';
+import {useRouter, useRoute} from 'vue-router';
 import {useSessionStore} from "@/stores/sessions";
 import mitt from 'mitt';
 
-const state = reactive({ appReady: false});
+const state = reactive({appReady: false});
 
 const bus = mitt();
 provide('bus', bus);
@@ -20,14 +20,12 @@ provide('session', session);
 const route = useRoute();
 
 watch(route, () => {
-  demarrer();
+    demarrer();
 });
 
 onMounted(() => {
-  demarrer();
+    demarrer();
 });
-
-
 
 function demarrer() {
     state.appReady = true;
@@ -35,23 +33,14 @@ function demarrer() {
 </script>
 
 <template>
-    <Navbar />
-  <template v-if="$route.path === '/DisplayDevice'">
-    <section :class="session.section.class">
-      <template v-if="state.appReady">
-        <RouterView />
-      </template>
-    </section>
-  </template>
-  <section v-if="$route.path !== '/DisplayDevice'" class="section">
+    <Navbar/>
     <template v-if="state.appReady">
-      <RouterView />
+        <RouterView/>
     </template>
-  </section>
 </template>
 
 <style>
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 </style>
