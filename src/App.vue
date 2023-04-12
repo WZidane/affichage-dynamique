@@ -1,19 +1,13 @@
 <script setup>
 
 import Navbar from '@/components/NavBar.vue';
-import {provide, onMounted, reactive, watch} from 'vue';
-import {useRouter, useRoute} from 'vue-router';
+import {provide, onMounted, reactive} from 'vue';
+import {useRouter} from 'vue-router';
 
 const state = reactive({appReady: false});
 
 const router = useRouter();
 provide('router', router);
-
-const route = useRoute();
-
-watch(route, () => {
-    demarrer();
-});
 
 onMounted(() => {
     demarrer();
