@@ -61,12 +61,8 @@ let state = reactive({
 onMounted(() => {
     getAlertDeviceInformation();
     document.documentElement.requestFullscreen();
-    setInterval(updateAlertInformation,  30 * 60 * 1000);
+    setInterval(getAlertDeviceInformation,  30 * 60 * 1000);
 })
-function updateAlertInformation() {
-    location.reload();
-}
-
 function getAllEcransInOneData(tab) {
     let permenantSequenceEcrans = [];
     tab.forEach(sequence => {
