@@ -8,25 +8,17 @@ export default {
         }
     },
     mounted() {
-        // On écoute les mouvements de la souris pour réinitialiser le timer
         document.addEventListener('mousemove', this.resetCursorTimer)
 
-        // On cache le curseur au chargement de la page
         this.hideCursor()
     },
-    beforeDestroy() {
-        // On retire l'écouteur d'événement à la destruction du component
-        document.removeEventListener('mousemove', this.resetCursorTimer)
-    },
+
     methods: {
         resetCursorTimer() {
-            // Si le timer est déjà lancé, on le réinitialise
             if (this.cursorTimer) {
                 clearInterval(this.cursorTimer)
             }
-            // On lance le timer pour cacher le curseur dans 1 seconde
             this.cursorTimer = setInterval(this.hideCursor, 1000)
-            // On remet le curseur visible
             this.showCursor()
         },
         hideCursor() {

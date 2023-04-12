@@ -64,7 +64,6 @@ onMounted(() => {
     setInterval(updateAlertInformation,  30 * 60 * 1000);
 })
 function updateAlertInformation() {
-    getAlertDeviceInformation();
     location.reload();
 }
 
