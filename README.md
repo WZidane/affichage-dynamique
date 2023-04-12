@@ -28,5 +28,5 @@ Lien du CMS regroupant toutes les informations de conception (maquettes, UML, ..
 
 Lien du gestionnaire d'administration Directus : https://74b3jzk3.directus.app/admin/ 
 
-Lien du gestionnaire d'affichage sur webetu :
+Lien du gestionnaire d'affichage sur Netlify :
 https://affichage-dynamique.netlify.app/
