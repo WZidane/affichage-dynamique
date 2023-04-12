@@ -19,7 +19,8 @@ La deuxième application web est l'**Affichage Dynamique**. C'est un gestionnair
 git clone git@github.com:WZidane/affichage-dynamique.git
 cd affichage-dynamique
 npm install
-npm run dev
+npm run build
+npm run dev ou npm run electron:start
 ```
 
 ## Accéder aux liens 
