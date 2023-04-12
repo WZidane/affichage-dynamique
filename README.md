@@ -24,7 +24,7 @@ npm run dev
 
 ## Accéder aux liens 
 
-Lien du CMS regroupant toutes les informations de conception (maquettes, UML, ...) : https://leosix.fr/affichage-dynamique/ 
+Lien du CMS regroupant toutes les informations de conception (maquettes, UML, etc...) : https://leosix.fr/affichage-dynamique/ 
 
 Lien du gestionnaire d'administration Directus : https://74b3jzk3.directus.app/admin/ 
 
