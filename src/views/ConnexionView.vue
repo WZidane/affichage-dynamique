@@ -1,104 +1,64 @@
 <script setup>
-import { inject, reactive } from 'vue'
-import {useUserStore} from "@/stores/user";
+import {inject, reactive} from 'vue'
 import {useTokenStore} from "@/stores/token";
-import {onMounted} from "@vue/runtime-core";
 
 const axios = inject('axios');
 const router = inject('router');
-const session = inject('session');
 const token = useTokenStore();
 
-let user = reactive({
-  email: '',
-  password: ''
-});
-
 let data = reactive({
-  status: "",
-  domaine: 0,
-  error: ""
-})
-
-
-onMounted(() => {
-  session.setNav();
-
+    status: "",
+    token: "",
+    error: ""
 })
 
 function DisplayError() {
-  data.error = "Adresse e-mail ou mot de passe incorrect !";
+    data.error = "Ce token n'existe pas";
 }
 
 function DisplaySuccess() {
-  data.error = "";
+    data.error = "";
 }
 
-async function validationFormulaire() {
-  axios.post(`https://74b3jzk3.directus.app/auth/login/`, {email: user.email, password: user.password}).then(function (response) {
-    data.status = response.statusText;
-    token.state.USER = response.data.data.access_token;
-    console.log(response.data.data.refresh_token)
-    token.state.REFRESHUSER = response.data.data.refresh_token;
+function validationFormulaire() {
+    token.state.TOKEN = data.token;
 
-  }).catch(() => {
-      DisplayError();
-  }).then(() => {
-    if(data.status === "OK") {
-      DisplaySuccess();
-      useUserStore().setConnected();
-      recupDomain();
-    }
-  })
-
+    axios.get(`https://74b3jzk3.directus.app/items/Dispositif_Affichage/?filter[id][_eq]=${token.state.TOKEN}`).then(() => {
+        DisplaySuccess();
+        router.push('/DisplayDevice');
+    }).catch(() => {
+        DisplayError();
+    })
 }
 
-async function recupDomain() {
-  await axios.get(`https://74b3jzk3.directus.app/users/me?access_token=${token.state.USER}&fields=Domaine`).then((response) => {
-      data.domaine = response.data;
-
-      token.setDomain(data.domaine.data.Domaine);
-  }).then(() => {
-    router.push('/UpdateDevice');
-  });
-}
 </script>
 
 <template>
+    <div class="connexionView">
+        <h1>TOKEN de l'écran</h1>
 
-  <div class="connexionView">
+        <form @submit.prevent="validationFormulaire">
+            <div class="field">
+                <label class="label">Identifiant du dispositif</label>
+                <input class="input" v-model="data.token" placeholder="ID du dispositif">
+            </div>
 
-    <h1>SE CONNECTER</h1>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="is-primary">Valider</button>
+                </div>
+            </div>
 
-    <form @submit.prevent="validationFormulaire">
+            <p v-if="data.error !== ''">
+                {{ data.error }}
+            </p>
+        </form>
 
-      <div class="field">
-        <label class="label">E-Mail</label>
-        <input class="input" v-model="user.email" type="email" placeholder="email@domaine.com">
-      </div>
-
-      <div class="field">
-        <label class="label">Mot de passe</label>
-        <input class="input" v-model="user.password" type="password" placeholder="Votre mot de passe">
-      </div>
-
-      <div class="field is-grouped">
-        <div class="control">
-          <button class="is-primary">Connexion</button>
-        </div>
-      </div>
-
-      <p v-if="data.error !== ''">
-          {{ data.error }}
-      </p>
-    </form>
-
-  </div>
-
+    </div>
 </template>
 
 <style scoped>
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 </style>

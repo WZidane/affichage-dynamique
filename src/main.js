@@ -1,7 +1,6 @@
-import { createApp, provide } from 'vue';
-import { createPinia } from 'pinia';
+import {createApp} from 'vue';
+import {createPinia} from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 
@@ -10,7 +9,7 @@ pinia.use(piniaPluginPersistedstate);
 
 import App from './App.vue';
 import router from './router';
-import './assets/main.css';
+import '../public/assets/css/main.css';
 
 const app = createApp(App);
 
