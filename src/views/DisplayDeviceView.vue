@@ -3,9 +3,11 @@ import {onMounted, reactive} from "@vue/runtime-core";
 import {inject} from "@vue/runtime-core";
 import {useTokenStore} from "@/stores/token";
 import {marked} from 'marked';
+import CursorHider from "@/components/CursorHider.vue";
 
 const token = useTokenStore();
 const axios = inject('axios');
+
 const backgroundColor = reactive({
     color: ''
 })
@@ -44,6 +46,7 @@ const img = reactive({
     border_radius: '',
     width: ''
 })
+
 let state = reactive({
     Device: {},
     sequences: [],
@@ -54,19 +57,16 @@ let state = reactive({
     EcranAlert: {},
     Durees: [],
 });
+
 onMounted(() => {
     getAlertDeviceInformation();
     document.documentElement.requestFullscreen();
-
+    setInterval(updateAlertInformation,  30 * 60 * 1000);
 })
-
-/*
-onUnmounted(() => {
-    clearInterval(state.intervalId2)
-    clearInterval(state.intervalId);
-});
-*/
-
+function updateAlertInformation() {
+    getAlertDeviceInformation();
+    location.reload();
+}
 
 function getAllEcransInOneData(tab) {
     let permenantSequenceEcrans = [];
@@ -217,12 +217,9 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.border_radius,
 Sequences.Sequence_id.Ecrans.Ecran_id.Template.img.width,
 Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(response => {
         state.Device = response.data.data
-        console.log(state.Device)
-        console.log(state.Device.Sequences)
         state.sequences = state.Device.Sequences;
         orderingSequence(state.sequences);
         let SequenceEcrans = getAllEcransInOneData(state.sequences);
-        console.log(SequenceEcrans)
         orderingEcrans(SequenceEcrans);
         buildingDataToDisplay(state.SequenceEcrans);
 
@@ -249,7 +246,6 @@ Sequences.Sequence_id.Ecrans.Ecran_id.Template.background_color.color`).then(res
 
 <template>
     <CursorHider/>
-
     <div class="content" :style="{ 'background-color':backgroundColor.color}" v-if="state.EcranAlert"
          v-html="state.htmlData[0]">
     </div>
